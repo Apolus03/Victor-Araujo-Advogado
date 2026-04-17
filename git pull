@@ -1,0 +1,42 @@
+[33mcommit f605679f67b1b000d4b57105893e74e6f19ce556[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Kaique Araujo Fernandes <kaiquearaujofernandes@gmail.com>
+Date:   Wed Apr 15 14:40:37 2026 -0300
+
+    feat: melhorias gerais no layout e conteúdo do site
+
+[33mcommit 35e27fe1501941bd98fa331d854ff4d567c3adee[m
+Author: santosfabin <fsfabianosantos03@gmail.com>
+Date:   Sun Apr 12 09:45:07 2026 -0300
+
+    fix: update viewport meta tag and dependencies; remove unused files
+
+[33mcommit 4d35e7166c5017f8f98cda773d7e8dfbf9ad041f[m
+Author: Kaique Araujo Fernandes <kaiquearaujofernandes@gmail.com>
+Date:   Sat Apr 11 18:03:26 2026 -0300
+
+    feat: melhorias gerais no site (UI/UX e novas seções)
+
+[33mcommit 6deb6fd677d168305637218a57b68206076d4b3c[m
+Author: Kaique Araujo Fernandes <kaiquearaujofernandes@gmail.com>
+Date:   Tue Apr 7 14:30:26 2026 -0300
+
+    feat: atualizações no site institucional
+    
+    - Alteração da logo
+    - Atualização do texto de apresentação
+    - Adição de imagens do advogado e da Têmis
+    - Adição de logos em múltiplas seções
+    - Remoção do subtítulo na seção Sobre
+    - Adição de imagens do escritório
+    - Atualização do tempo de experiência
+    - Atualização do texto na seção Atuação
+    - Adição de marca d’água na seção Contato
+    - Atualização da logo e textos do rodapé
+    - Inclusão da OAB
+    - Adição da seção Escritório
+
+[33mcommit 43d91b4ebd04c3f02b9aeaeebc0cf0f83cf320b0[m
+Author: santosfabin <fsfabianosantos03@gmail.com>
+Date:   Thu Mar 19 16:23:16 2026 -0300
+
+    first commit
