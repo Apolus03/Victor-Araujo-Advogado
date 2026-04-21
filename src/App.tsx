@@ -505,10 +505,8 @@ function IdentitySection() {
           className={`identityText reveal ${textShow ? 'show' : ''}`}
         >
           <h2 className="sectionTitle">
-            Tradição que evolui <em>com a modernidade</em>.
+            Conheça um pouco da minha <em>trajetória</em>.
           </h2>
-
-          <div className="kicker">Conheça um pouco da minha trajetória.</div>
 
           <p className="lead">
             A <b>Victor Araujo Sociedade Individual de Advocacia</b> foi criada
