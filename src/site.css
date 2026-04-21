@@ -536,6 +536,7 @@ body {
   color: rgba(45, 37, 34, 0.65);
   text-transform: uppercase;
   flex-wrap: nowrap;
+  margin-top: 10px;
 }
 
 .kickerSpecialtiesLogo {
@@ -1674,7 +1675,7 @@ body {
   .lead,
   .body,
   .quoteCard {
-    text-align: center;
+    text-align: justify;
   }
 
   .footerInner {

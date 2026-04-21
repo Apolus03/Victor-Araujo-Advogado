@@ -514,13 +514,14 @@ function IdentitySection() {
             A <b>Victor Araujo Sociedade Individual de Advocacia</b> foi criada
             com o propósito de oferecer um atendimento jurídico próximo,
             estratégico e realmente comprometido com cada cliente.
-          </p>
-
-          <p className="body">
-            Cada caso é tratado com atenção e seriedade, sempre buscando a
+            <br />Cada caso é tratado com atenção e seriedade, sempre buscando a
             melhor solução de forma clara e eficiente. Mais do que atuar em
             processos, o foco está em orientar, prevenir problemas e proteger
             seus interesses no longo prazo.
+          </p>
+
+          <p className="body">
+
           </p>
 
           <div className="quoteCard">
