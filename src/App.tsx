@@ -464,7 +464,7 @@ function HeroSection() {
       <div className="heroInner">
         <div className="heroCenter">
           <img src={logoPng} alt="Vitor Araujo" className="heroLogo" />
-          <span className="heroSince">DESDE 2023</span>
+          <span className="heroSince">DESDE 2020</span>
 
           <h1 className="heroTitle">VICTOR ARAUJO</h1>
 
@@ -574,12 +574,11 @@ function OfficeSection() {
     {
       type: 'image',
       src: 'https://static.revistahaus.com.br/revistahaus/2024/05/02172529/revista-haus-projeto-de-arquitetura-escritorio-de-advocacia-submerso-studio-archa-divulgacao-5.jpg',
-      link: 'https://www.google.com/maps?q=Av.+Marginal+do+Oratorio,+33+Santo+Andre',
     },
     {
       type: 'map',
-      src: 'https://www.google.com/maps?q=Av.+Marginal+do+Oratorio,+33+Santo+Andre&output=embed',
-      link: 'https://www.google.com/maps?q=Av.+Marginal+do+Oratorio,+33+Santo+Andre',
+      src: 'https://www.google.com/maps?q=Av.+Marginal+do+Oratorio,+37+Santo+Andre&output=embed',
+      link: 'https://www.google.com/maps?q=Av.+Marginal+do+Oratorio,+37+Santo+Andre',
     },
   ];
 
@@ -651,11 +650,11 @@ function OfficeSection() {
           </h2>
 
           <a
-            href="https://www.google.com/maps?q=Av.+Marginal+do+Oratorio,+33+Santo+Andre"
+            href="https://www.google.com/maps?q=Av.+Marginal+do+Oratorio,+37+Santo+Andre"
             target="_blank"
             className="officeAddress"
           >
-            Av. Marginal do Oratório, 33 - Jd. Utinga, Santo André - SP
+            Av. Marginal Oratório, Jardim Utinga, 37
           </a>
         </div>
 
@@ -707,34 +706,7 @@ function OfficeSection() {
           </div>
         </div>
 
-        <div className="supporters">
-          <p className="supportersTitle">
-            apoiadores que confiam no meu trabalho
-          </p>
-
-          <div className="supportersGrid">
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg"
-              alt=""
-            />
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg"
-              alt=""
-            />
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg"
-              alt=""
-            />
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg"
-              alt=""
-            />
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg"
-              alt=""
-            />
-          </div>
-        </div>
+       
       </div>
     </section>
   );
@@ -789,17 +761,9 @@ function SupportSection() {
           aria-label="Serviços de apoio"
         >
           <div className="supportCardsInner">
-            <div className="supportCard" style={{ transitionDelay: '0.1s' }}>
-              <div className="supportIndex">01</div>
-              <div className="supportCardTitle">Sustentação Oral</div>
-              <div className="supportCardBody">
-                Sustentação oral presencial ou remota, com preparo técnico,
-                firmeza argumentativa e clareza na exposição da tese.
-              </div>
-            </div>
+           
 
             <div className="supportCard" style={{ transitionDelay: '0.2s' }}>
-              <div className="supportIndex">02</div>
               <div className="supportCardTitle">Audiências</div>
               <div className="supportCardBody">
                 Acompanhamento em audiências cíveis e criminais, com registro
@@ -808,10 +772,7 @@ function SupportSection() {
             </div>
 
             <div
-              className="supportCard supportCardHighlight"
-              style={{ transitionDelay: '0.3s' }}
-            >
-              <div className="supportIndex">03</div>
+              className="supportCard supportCardHighlight" style={{ transitionDelay: '0.3s' }}>
               <div className="supportCardTitle">Pareceres</div>
               <div className="supportCardBody">
                 Pareceres com análise aprofundada e fundamentação técnica
@@ -820,7 +781,6 @@ function SupportSection() {
             </div>
 
             <div className="supportCard" style={{ transitionDelay: '0.4s' }}>
-              <div className="supportIndex">04</div>
               <div className="supportCardTitle">Diligências</div>
               <div className="supportCardBody">
                 Diligências em fóruns, tribunais e órgãos administrativos, com
@@ -948,7 +908,7 @@ function ContactSection() {
             </a>
 
             <a
-              href="https://www.instagram.com/_araujoadvogados/"
+              href="https://www.instagram.com/ojuara1994/"
               className="contactRow"
             >
               <div className="contactIcon" aria-hidden="true">
