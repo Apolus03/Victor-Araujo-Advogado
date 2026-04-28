@@ -1,10 +1,4 @@
-import {
-  useMemo,
-  useState,
-  useEffect,
-  type TouchEvent,
-  type FormEvent,
-} from 'react';
+import { useState, useEffect, type TouchEvent } from 'react';
 import logoPng from './assets/Logo.png';
 import vitorPng from '../img/img_vitor.png';
 import temisPng from '../img/img_temis.png';
@@ -165,209 +159,58 @@ function scrollToId(id: string) {
   el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-/** E-mail profissional exibido no site (fallback mailto — sempre funciona). */
-// const CONTACT_PROFESSIONAL_EMAIL = 'victor_araujo@adv.oab.org.br';
-const CONTACT_PROFESSIONAL_EMAIL = 'apolus03@gmail.com';
+const CONTACT_PROFESSIONAL_EMAIL = 'victor_araujo@adv.oab.org.br';
+const CONTACT_WHATSAPP_PHONE = '5511954258694';
+const MAX_NOME_LENGTH = 120;
+const MAX_EMAIL_LENGTH = 150;
+const MAX_ASSUNTO_LENGTH = 255;
 
-/**
- * Chave Web3Forms (https://web3forms.com — grátis, 1 minuto).
- * Cole aqui; se estiver vazio, tentamos FormSubmit abaixo.
- */
-const WEB3FORMS_ACCESS_KEY = '6c4324e4-d9fd-416b-a577-d5a1a898351a';
-
-const WEB3FORMS_SUBMIT_URL = 'https://api.web3forms.com/submit';
-
-/** ID FormSubmit (ativação por URL no e-mail deles). */
-const FORMSUBMIT_FORM_ID = '4349be602e8890c4b9787fadace0bc42';
-
-type FormSubmitResponse = {
-  message?: string;
-  error?: string;
-  success?: string | boolean;
-};
-
-/** Confirmação explícita de sucesso em JSON (vários serviços usam boolean ou string). */
-function jsonIndicatesSuccess(value: unknown): boolean {
-  if (value === true) return true;
-  if (typeof value === 'string') {
-    const v = value.trim().toLowerCase();
-    return v === 'true' || v === '1' || v === 'yes';
-  }
-  return false;
-}
-
-function contactMailtoHref(form: {
+function buildWhatsappMessage(form: {
   nome: string;
   email: string;
   telefone: string;
   especialidade: string;
   assunto: string;
 }) {
-  const nome = form.nome.trim() || 'Visitante';
-  const subject = encodeURIComponent(`Contato pelo site — ${nome}`);
-  const tel = form.telefone.trim();
-  const esp = form.especialidade.trim();
-  let text = `Nome: ${form.nome.trim()}\nE-mail: ${form.email.trim()}`;
-  if (tel) text += `\nTelefone: ${tel}`;
-  if (esp) text += `\nÁrea jurídica: ${esp}`;
-  text += `\n\n${form.assunto.trim()}`;
-  const body = encodeURIComponent(text);
-  return `mailto:${CONTACT_PROFESSIONAL_EMAIL}?subject=${subject}&body=${body}`;
+  const nome = form.nome.trim() || 'Não informado';
+  const email = form.email.trim() || 'Não informado';
+  const telefone = form.telefone.trim();
+  const especialidade = form.especialidade.trim();
+  const assunto = form.assunto.trim() || 'Não informado';
+
+  const lines = [
+    'Olá, Victor! Vim pelo site e gostaria de um atendimento.',
+    `Meu nome é ${nome}, meu e-mail é ${email}${telefone ? ` e meu telefone é ${telefone}` : ''}.`,
+    ...(especialidade
+      ? [`A especialidade jurídica de meu interesse é ${especialidade}.`]
+      : []),
+    'O que eu gostaria de falar é:',
+    assunto,
+  ];
+
+  return lines.join('\n');
 }
 
-type SubmitContactResult = { ok: true } | { ok: false; message: string };
-type ContactPayload = {
-  nome: string;
-  email: string;
-  telefone: string;
-  especialidade: string;
-  assunto: string;
-};
-
-async function submitViaWeb3Forms(
-  payload: ContactPayload,
-): Promise<SubmitContactResult> {
-  let res: Response;
-  try {
-    res = await fetch(WEB3FORMS_SUBMIT_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-      body: JSON.stringify({
-        access_key: WEB3FORMS_ACCESS_KEY.trim(),
-        subject: `Contato pelo site — ${payload.nome.trim()}`,
-        from_name: payload.nome.trim(),
-        replyto: payload.email.trim(),
-        Nome: payload.nome.trim(),
-        'E-mail': payload.email.trim(),
-        ...(payload.telefone.trim()
-          ? { Telefone: payload.telefone.trim() }
-          : {}),
-        ...(payload.especialidade.trim()
-          ? { 'Área jurídica': payload.especialidade.trim() }
-          : {}),
-        Mensagem: payload.assunto.trim(),
-      }),
-    });
-  } catch {
-    return {
-      ok: false,
-      message:
-        'Não foi possível conectar ao serviço de envio (rede, firewall ou bloqueador). Use o link abaixo para abrir no seu e-mail.',
-    };
+function formatWhatsappPhone(phone: string) {
+  const digits = phone.replace(/\D/g, '');
+  if (digits.length === 13 && digits.startsWith('55')) {
+    const ddd = digits.slice(2, 4);
+    const firstPart = digits.slice(4, 9);
+    const secondPart = digits.slice(9);
+    return `(${ddd}) ${firstPart}-${secondPart}`;
   }
-
-  const raw = await res.text();
-  let data: { success?: unknown; message?: string } = {};
-  try {
-    data = JSON.parse(raw) as { success?: unknown; message?: string };
-  } catch {
-    return {
-      ok: false,
-      message:
-        'O serviço de envio respondeu de forma inesperada. Tente o link “Enviar pelo e-mail” abaixo.',
-    };
-  }
-
-  const accepted = res.ok && jsonIndicatesSuccess(data.success);
-  if (!accepted) {
-    return {
-      ok: false,
-      message:
-        (typeof data.message === 'string' && data.message.trim()) ||
-        'O envio não foi aceito pelo Web3Forms. Tente o link “Enviar pelo e-mail” abaixo.',
-    };
-  }
-  return { ok: true };
+  return phone;
 }
 
-async function submitViaFormSubmit(
-  payload: ContactPayload,
-): Promise<SubmitContactResult> {
-  let res: Response;
-  try {
-    res = await fetch(
-      `https://formsubmit.co/ajax/${FORMSUBMIT_FORM_ID}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify({
-          Nome: payload.nome.trim(),
-          'E-mail': payload.email.trim(),
-          ...(payload.telefone.trim()
-            ? { Telefone: payload.telefone.trim() }
-            : {}),
-          ...(payload.especialidade.trim()
-            ? { 'Área jurídica': payload.especialidade.trim() }
-            : {}),
-          Mensagem: payload.assunto.trim(),
-          _subject: `Contato pelo site — ${payload.nome.trim()}`,
-          _replyto: payload.email.trim(),
-          _captcha: false,
-        }),
-      },
-    );
-  } catch {
-    return {
-      ok: false,
-      message:
-        'Não foi possível conectar ao serviço de envio (rede, firewall ou bloqueador). Use o link abaixo para abrir no seu e-mail.',
-    };
+function formatPhoneInput(value: string) {
+  const digits = value.replace(/\D/g, '').slice(0, 11);
+  if (digits.length === 0) return '';
+  if (digits.length <= 2) return `(${digits}`;
+  if (digits.length <= 6) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+  if (digits.length <= 10) {
+    return `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
   }
-
-  const raw = await res.text();
-  let data: FormSubmitResponse = {};
-  try {
-    data = JSON.parse(raw) as FormSubmitResponse;
-  } catch {
-    return {
-      ok: false,
-      message:
-        'O serviço de envio respondeu de forma inesperada. Tente o link “Enviar pelo e-mail” abaixo.',
-    };
-  }
-
-  const accepted = res.ok && jsonIndicatesSuccess(data.success);
-
-  if (!accepted) {
-    const rawMsg = typeof data.message === 'string' ? data.message : '';
-    if (/activation|activate form|needs activation/i.test(rawMsg)) {
-      return {
-        ok: false,
-        message:
-          'O formulário ainda não foi ativado. Abra o e-mail que o FormSubmit enviou, clique em “Activate Form” e tente de novo. Confira também o spam.',
-      };
-    }
-    if (/web server|html files/i.test(rawMsg)) {
-      return {
-        ok: false,
-        message:
-          'Abra o site pelo endereço do servidor (npm run dev ou o link publicado), não abra o arquivo HTML direto no disco.',
-      };
-    }
-    return {
-      ok: false,
-      message:
-        rawMsg.trim() ||
-        (typeof data.error === 'string' && data.error.trim()) ||
-        'O envio não foi aceito pelo FormSubmit. Use o link “Enviar pelo e-mail” abaixo.',
-    };
-  }
-  return { ok: true };
-}
-
-async function submitContactForm(
-  payload: ContactPayload,
-): Promise<SubmitContactResult> {
-  if (WEB3FORMS_ACCESS_KEY.trim()) {
-    return submitViaWeb3Forms(payload);
-  }
-  return submitViaFormSubmit(payload);
+  return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
 }
 
 function SiteHeader(props: { nav: NavItem[] }) {
@@ -512,15 +355,14 @@ function IdentitySection() {
             A <b>Victor Araujo Sociedade Individual de Advocacia</b> foi criada
             com o propósito de oferecer um atendimento jurídico próximo,
             estratégico e realmente comprometido com cada cliente.
-            <br />Cada caso é tratado com atenção e seriedade, sempre buscando a
+            <br />
+            Cada caso é tratado com atenção e seriedade, sempre buscando a
             melhor solução de forma clara e eficiente. Mais do que atuar em
             processos, o foco está em orientar, prevenir problemas e proteger
             seus interesses no longo prazo.
           </p>
 
-          <p className="body">
-
-          </p>
+          <p className="body"></p>
 
           <div className="quoteCard">
             <span className="quoteIcon">“</span>
@@ -705,8 +547,6 @@ function OfficeSection() {
             ))}
           </div>
         </div>
-
-       
       </div>
     </section>
   );
@@ -761,8 +601,6 @@ function SupportSection() {
           aria-label="Serviços de apoio"
         >
           <div className="supportCardsInner">
-           
-
             <div className="supportCard" style={{ transitionDelay: '0.2s' }}>
               <div className="supportCardTitle">Audiências</div>
               <div className="supportCardBody">
@@ -772,7 +610,9 @@ function SupportSection() {
             </div>
 
             <div
-              className="supportCard supportCardHighlight" style={{ transitionDelay: '0.3s' }}>
+              className="supportCard supportCardHighlight"
+              style={{ transitionDelay: '0.3s' }}
+            >
               <div className="supportCardTitle">Pareceres</div>
               <div className="supportCardBody">
                 Pareceres com análise aprofundada e fundamentação técnica
@@ -802,64 +642,12 @@ function ContactSection() {
     especialidade: '',
     assunto: '',
   });
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
-  const [fieldErrors, setFieldErrors] = useState<
-    Partial<Record<'nome' | 'email' | 'assunto', string>>
-  >({});
   const { ref: leftRef, show: leftShow } = useScrollReveal<HTMLDivElement>();
   const { ref: rightRef, show: rightShow } = useScrollReveal<HTMLDivElement>();
-  const mailtoHref = useMemo(() => contactMailtoHref(form), [form]);
-
-  const validateForm = () => {
-    const nome = form.nome.trim();
-    const email = form.email.trim();
-    const assunto = form.assunto.trim();
-    const next: Partial<Record<'nome' | 'email' | 'assunto', string>> = {};
-    if (!nome) next.nome = 'Preencha o nome.';
-    if (!email) next.email = 'Preencha o e-mail.';
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-      next.email = 'Digite um e-mail válido.';
-    if (assunto.length < 3)
-      next.assunto = 'O assunto precisa ter pelo menos 3 letras.';
-    return next;
-  };
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSubmitError(null);
-    const errors = validateForm();
-    if (Object.keys(errors).length > 0) {
-      setFieldErrors(errors);
-      return;
-    }
-    setFieldErrors({});
-    setIsSubmitting(true);
-    try {
-      const result = await submitContactForm(form);
-      if (result.ok) {
-        setForm({
-          nome: '',
-          email: '',
-          telefone: '',
-          especialidade: '',
-          assunto: '',
-        });
-        setIsSubmitted(true);
-        setTimeout(() => setIsSubmitted(false), 5000);
-      } else {
-        setSubmitError(result.message);
-      }
-    } catch (err) {
-      const hint =
-        err instanceof Error && err.message ? ` (${err.message})` : '';
-      setSubmitError(
-        `Não foi possível enviar agora.${hint} Tente de novo ou use o link abaixo para abrir no seu e-mail.`,
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
+  const handleSendToWhatsapp = () => {
+    const message = buildWhatsappMessage(form);
+    const url = `https://wa.me/${CONTACT_WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -874,13 +662,18 @@ function ContactSection() {
             Entre em contato agora e entenda como posso te ajudar no seu caso.
           </div>
           <div className="contactDirect">
-            <a href="https://wa.me/5511954258694" className="contactRow">
+            <a
+              href={`https://wa.me/${CONTACT_WHATSAPP_PHONE}`}
+              className="contactRow"
+            >
               <div className="contactIcon" aria-hidden="true">
                 <FaWhatsapp />
               </div>
               <div>
-                <div className="contactLabel">TELEFONE / WHATSAPP</div>
-                <div className="contactValue">(11) 95425-8694</div>
+                <div className="contactLabel">WHATSAPP</div>
+                <div className="contactValue">
+                  {formatWhatsappPhone(CONTACT_WHATSAPP_PHONE)}
+                </div>
               </div>
             </a>
 
@@ -929,71 +722,56 @@ function ContactSection() {
           <form
             id="formulario-contato"
             className="returnForm"
-            onSubmit={handleSubmit}
+            onSubmit={(e) => e.preventDefault()}
           >
             <div className="returnTitle">Solicite</div>
 
             <label className="field" style={{ transitionDelay: '0.3s' }}>
-              <span
-                className={`fieldLabel ${fieldErrors.nome ? 'fieldLabelError' : ''}`}
-              >
-                NOME COMPLETO
-              </span>
+              <span className="fieldLabel">NOME COMPLETO</span>
               <input
                 value={form.nome}
-                onChange={(e) => {
-                  setForm((s) => ({ ...s, nome: e.target.value }));
-                  if (fieldErrors.nome) {
-                    setFieldErrors(({ nome: _n, ...rest }) => rest);
-                  }
-                }}
+                onChange={(e) =>
+                  setForm((s) => ({
+                    ...s,
+                    nome: e.target.value.slice(0, MAX_NOME_LENGTH),
+                  }))
+                }
                 placeholder="Digite seu nome..."
-                className={fieldErrors.nome ? 'fieldInputError' : undefined}
-                aria-invalid={Boolean(fieldErrors.nome)}
+                maxLength={MAX_NOME_LENGTH}
               />
-              {fieldErrors.nome ? (
-                <p className="fieldErrorMsg">{fieldErrors.nome}</p>
-              ) : null}
             </label>
 
             <label className="field" style={{ transitionDelay: '0.5s' }}>
-              <span
-                className={`fieldLabel ${fieldErrors.email ? 'fieldLabelError' : ''}`}
-              >
-                SEU E-MAIL
-              </span>
+              <span className="fieldLabel">SEU E-MAIL</span>
               <input
                 value={form.email}
-                onChange={(e) => {
-                  setForm((s) => ({ ...s, email: e.target.value }));
-                  if (fieldErrors.email) {
-                    setFieldErrors(({ email: _e, ...rest }) => rest);
-                  }
-                }}
+                onChange={(e) =>
+                  setForm((s) => ({
+                    ...s,
+                    email: e.target.value.slice(0, MAX_EMAIL_LENGTH),
+                  }))
+                }
                 placeholder="exemplo@dominio.com"
                 type="email"
-                className={fieldErrors.email ? 'fieldInputError' : undefined}
-                aria-invalid={Boolean(fieldErrors.email)}
+                maxLength={MAX_EMAIL_LENGTH}
               />
-              {fieldErrors.email ? (
-                <p className="fieldErrorMsg">{fieldErrors.email}</p>
-              ) : null}
             </label>
 
             <label className="field" style={{ transitionDelay: '0.6s' }}>
               <span className="fieldLabel">
-                TELEFONE{' '}
-                <span className="fieldOptional">(opcional)</span>
+                TELEFONE <span className="fieldOptional">(opcional)</span>
               </span>
               <input
                 value={form.telefone}
-                onChange={(e) =>
-                  setForm((s) => ({ ...s, telefone: e.target.value }))
-                }
+                onChange={(e) => {
+                  const telefoneFormatado = formatPhoneInput(e.target.value);
+                  setForm((s) => ({ ...s, telefone: telefoneFormatado }));
+                }}
                 placeholder="(00) 00000-0000"
                 type="tel"
                 inputMode="tel"
                 autoComplete="tel"
+                maxLength={15}
               />
             </label>
 
@@ -1021,56 +799,28 @@ function ContactSection() {
             </label>
 
             <label className="field" style={{ transitionDelay: '0.8s' }}>
-              <span
-                className={`fieldLabel ${fieldErrors.assunto ? 'fieldLabelError' : ''}`}
-              >
-                ASSUNTO JURÍDICO
-              </span>
+              <span className="fieldLabel">ASSUNTO JURÍDICO</span>
               <textarea
                 value={form.assunto}
-                onChange={(e) => {
-                  setForm((s) => ({ ...s, assunto: e.target.value }));
-                  if (fieldErrors.assunto) {
-                    setFieldErrors(({ assunto: _a, ...rest }) => rest);
-                  }
-                }}
+                onChange={(e) =>
+                  setForm((s) => ({
+                    ...s,
+                    assunto: e.target.value.slice(0, MAX_ASSUNTO_LENGTH),
+                  }))
+                }
                 placeholder="Descreva brevemente sua necessidade..."
-                className={fieldErrors.assunto ? 'fieldInputError' : undefined}
-                aria-invalid={Boolean(fieldErrors.assunto)}
+                maxLength={MAX_ASSUNTO_LENGTH}
               />
-              {fieldErrors.assunto ? (
-                <p className="fieldErrorMsg">{fieldErrors.assunto}</p>
-              ) : null}
             </label>
 
-            {submitError ? (
-              <p className="formFeedback formFeedbackErr" role="alert">
-                {submitError}
-              </p>
-            ) : null}
-
             <button
-              type="submit"
+              type="button"
               className="sendBtn"
               style={{ transitionDelay: '0.4s' }}
-              disabled={isSubmitting}
+              onClick={handleSendToWhatsapp}
             >
-              {isSubmitted
-                ? 'MENSAGEM ENVIADA!'
-                : isSubmitting
-                  ? 'ENVIANDO…'
-                  : 'ENVIAR MENSAGEM'}
+              ENVIAR MENSAGEM
             </button>
-
-            <p className="contactMailtoHint">
-              <a className="contactMailtoLink" href={mailtoHref}>
-                Abrir mensagem no seu e-mail
-              </a>
-              <span className="contactMailtoHintSub">
-                {' '}
-                (Gmail, Outlook etc. — não depende do FormSubmit.)
-              </span>
-            </p>
           </form>
         </div>
       </div>
