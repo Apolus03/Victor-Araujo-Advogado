@@ -9,9 +9,20 @@ import logoPng from './assets/Logo.png';
 import vitorPng from '../img/img_vitor.png';
 import temisPng from '../img/img_temis.png';
 import officePng from '../img/img_escritório.png';
+import escavadorPng from '../img/img_escavador.png';
+import escavadorTitlePng from '../img/img_escavadorTitle.png';
 import { FaLinkedinIn, FaInstagram, FaWhatsapp } from 'react-icons/fa';
 import { SpecialtyCard, type SpecialtyItem } from './components/SpecialtyCard';
 import { useScrollReveal } from './hooks/useScrollReveal';
+import {
+  ResponsiveContainer,
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  Tooltip,
+} from "recharts";
+
 
 type NavItem = { id: string; label: string };
 
@@ -151,8 +162,8 @@ const SPECIALTY_ITEMS: SpecialtyItem[] = [
     icon: IconBriefcase,
   },
   {
-    title: 'Penal',
-    desc: 'Atuação estratégica e técnica na defesa de direitos fundamentais.',
+    title: 'Penitenciário',
+    desc: 'Atuação na execução penal, garantindo direitos e acompanhamento de pessoas privadas de liberdade.',
     icon: IconShield,
   },
 ];
@@ -500,67 +511,68 @@ function IdentitySection() {
   return (
     <section id="sobre" className="section sectionIdentity">
       <div className="container identityGrid">
+
+        {/* TEXTO */}
         <div
           ref={textRef}
           className={`identityText reveal ${textShow ? 'show' : ''}`}
         >
+
+
+          <span className="sectionHeader">
+            <span className="line" />
+            <span className="sectionTag">Sobre</span>
+          </span>
+
           <h2 className="sectionTitle">
-            Conheça um pouco da minha <em>trajetória</em>.
+            Conheça um pouco da <em>minha</em> trajetória.
           </h2>
 
+          <div className="titleDivider" />
           <p className="lead">
             A <b>Victor Araujo Sociedade Individual de Advocacia</b> foi criada
             com o propósito de oferecer um atendimento jurídico próximo,
             estratégico e realmente comprometido com cada cliente.
-            <br />Cada caso é tratado com atenção e seriedade, sempre buscando a
-            melhor solução de forma clara e eficiente. Mais do que atuar em
-            processos, o foco está em orientar, prevenir problemas e proteger
-            seus interesses no longo prazo.
           </p>
 
           <p className="body">
-
+            Cada caso é tratado com atenção e seriedade, sempre buscando a melhor
+            solução de forma clara e eficiente. Mais do que atuar em processos,
+            o foco está em orientar, prevenir problemas e proteger seus
+            interesses no longo prazo.
           </p>
-
-          <div className="quoteCard">
-            <span className="quoteIcon">“</span>
-            <blockquote>
-              Onde houver um direito a ser defendido, haverá dedicação total em
-              cada etapa do caminho.
-            </blockquote>
-          </div>
         </div>
 
+        {/* IMAGEM + OVERLAY */}
         <div
           ref={imgRef}
-          className={`identityMedia reveal ${imgShow ? 'show' : ''}`}
-          aria-label="Foto do escritório (recorte)"
+          className={`identityVisual reveal ${imgShow ? 'show' : ''}`}
         >
-          <div className="identityFrame">
+          <div className="imageWrapper">
             <img
               src={officePng}
-              alt="Foto do escritório"
+              alt="Advogado"
               className="officeImg"
             />
 
-            {/* Badge 1 */}
-            <div className="historyBadge historyBadge1" aria-hidden="true">
-              <div className="historyNumber">6+</div>
-              <div className="historyLabel">ANOS DE HISTÓRIA</div>
-            </div>
+            {/* OVERLAY */}
+            <div className="imageOverlay" />
 
-            {/* Badge 2 */}
-            <div className="historyBadge historyBadge2" aria-hidden="true">
-              <div className="historyNumber">100+</div>
-              <div className="historyLabel">CASOS ATENDIDOS</div>
+            {/* FRASE */}
+            <div className="quoteOverlay">
+              <span className="quoteIcon">“</span>
+              <p>
+                Onde houver um direito a ser defendido, haverá dedicação total
+                em cada etapa do caminho.
+              </p>
             </div>
           </div>
         </div>
+
       </div>
     </section>
   );
 }
-
 function OfficeSection() {
   const slides = [
     {
@@ -645,10 +657,16 @@ function OfficeSection() {
     <section id="escritorio" className="section officeSection">
       <div className="container officeGrid">
         <div className="officeText">
+          <span className="sectionHeaderCentralize">
+            <span className="line" />
+            <span className="sectionTag">escritório</span>
+            <span className="line" />
+          </span>
           <h2 className="sectionTitle">
-            Conheça o meu <em>escritório</em>
+            Conheça o meu <em>escritório</em>.
           </h2>
 
+     
           <a
             href="https://www.google.com/maps?q=Av.+Marginal+do+Oratorio,+37+Santo+Andre"
             target="_blank"
@@ -656,6 +674,8 @@ function OfficeSection() {
           >
             Av. Marginal Oratório, Jardim Utinga, 37
           </a>
+               <div className="titleDividerCentralize" />
+
         </div>
 
         <div
@@ -706,7 +726,7 @@ function OfficeSection() {
           </div>
         </div>
 
-       
+
       </div>
     </section>
   );
@@ -717,11 +737,15 @@ function SpecialtiesSection() {
     <section id="atuacao" className="section sectionSpecialties">
       <div className="container">
         <div className="sectionHeadingCentered">
-          <h2 className="subsectionTitle">Especialidades Jurídicas</h2>
-          <br />
-          <div className="kicker">
-            Veja em quais situações posso te ajudar no dia a dia.
-          </div>
+
+          <span className="sectionHeaderCentralize">
+            <span className="line" />
+            <span className="sectionTag">Atuação</span>
+            <span className="line" />
+          </span>
+          <h2 className="sectionTitle"> Veja em quais situações posso te <em>ajudar</em> no dia a dia.<br /> <div className="titleDividerCentralize" /></h2>
+
+
         </div>
       </div>
 
@@ -733,62 +757,142 @@ function SpecialtiesSection() {
     </section>
   );
 }
+const dataGrafico = [
+  { ano: "2022", processos: 60 },
+  { ano: "2023", processos: 75 },
+  { ano: "2024", processos: 50 },
+  { ano: "2025", processos: 40 },
+  { ano: "2026", processos: 15 },
+];
+
+
+function AtuacoesGrafico() {
+  return (
+    <div className="escavadorExtra">
+
+
+
+      {/* GRÁFICO */}
+      <div className="graficoCard">
+        <div className="graficoHeader">
+          <h4>Processos por ano</h4>
+          <span className="graficoBadge">Dados públicos</span>
+        </div>
+
+        <ResponsiveContainer width="100%" height={220}>
+          <AreaChart data={dataGrafico}>
+            <defs>
+              <linearGradient id="colorProcessos" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#b68b2c" stopOpacity={0.4} />
+                <stop offset="95%" stopColor="#b68b2c" stopOpacity={0} />
+              </linearGradient>
+            </defs>
+
+            <XAxis dataKey="ano" stroke="#aaa" />
+            <YAxis stroke="#aaa" />
+            <Tooltip />
+
+            <Area
+              type="monotone"
+              dataKey="processos"
+              stroke="#b68b2c"
+              fill="url(#colorProcessos)"
+              strokeWidth={2.5}
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      </div>
+
+
+    </div>
+  );
+}
 
 function SupportSection() {
   const { ref: textRef, show: textShow } = useScrollReveal<HTMLDivElement>();
   const { ref: cardsRef, show: cardsShow } = useScrollReveal<HTMLDivElement>();
+
   return (
-    <section id="apoio" className="section sectionIdentity supportSection">
+    <section id="apoio" className="section proceedingSection">
       <div className="container supportGrid">
+
+        {/* 🔴 ESQUERDA (vermelho) */}
         <div
           ref={textRef}
           className={`supportText reveal ${textShow ? 'show' : ''}`}
         >
-          <h2 className="supportTitle">
-            Logística Jurídica e
-            <br />
-            Correspondência
+          <span className="sectionHeader">
+            <span className="line" />
+            <span className="sectionTag">Apoio</span>
+          </span>
+          <h2 className="sectionTitle">
+            Se voce é advogado, conte <em>comigo</em> para apoio.
           </h2>
-          <br />
+          <div className="titleDivider" />
           <div className="kicker">
-            Se você é advogado, conte comigo para te apoiar.
+
+          </div>
+
+          <div
+            ref={cardsRef}
+            className={`supportCards reveal ${cardsShow ? 'show' : ''}`}
+          >
+            <div className="supportCardsInner">
+
+              <div className="supportCard">
+                <div className="supportCardTitle">Audiências</div>
+                <div className="supportCardBody">
+                  Acompanhamento em audiências cíveis e criminais, com registro fiel do ato e alinhamento à estratégia definida para o caso.
+                </div>
+              </div>
+
+              <div className="supportCard supportCardHighlight">
+                <div className="supportCardTitle">Pareceres</div>
+                <div className="supportCardBody">
+                  Pareceres com análise aprofundada e fundamentação técnica consistente, orientando decisões com segurança jurídica.
+                </div>
+              </div>
+
+              <div className="supportCard">
+                <div className="supportCardTitle">Diligências</div>
+                <div className="supportCardBody">
+                  Diligências em fóruns, tribunais e órgãos administrativos, com agilidade e retorno objetivo sobre cada etapa cumprida.
+                </div>
+              </div>
+
+            </div>
           </div>
         </div>
 
-        <div
-          ref={cardsRef}
-          className={`supportCards reveal ${cardsShow ? 'show' : ''}`}
-          aria-label="Serviços de apoio"
-        >
-          <div className="supportCardsInner">
-           
+        {/* 🔵 DIREITA (azul) */}
+        <div className="escavadorPanel">
 
-            <div className="supportCard" style={{ transitionDelay: '0.2s' }}>
-              <div className="supportCardTitle">Audiências</div>
-              <div className="supportCardBody">
-                Acompanhamento em audiências cíveis e criminais, com registro
-                fiel do ato e alinhamento à estratégia definida para o caso.
-              </div>
+          <div className="escavadorHeader">
+            <div className='escavadorLogoContainer'>
+              <img src={escavadorPng} alt="Escavador" className='escavadorPng' />
             </div>
 
-            <div
-              className="supportCard supportCardHighlight" style={{ transitionDelay: '0.3s' }}>
-              <div className="supportCardTitle">Pareceres</div>
-              <div className="supportCardBody">
-                Pareceres com análise aprofundada e fundamentação técnica
-                consistente, orientando decisões com segurança jurídica.
-              </div>
-            </div>
+            <div className='escavadorLabelContainer'>
 
-            <div className="supportCard" style={{ transitionDelay: '0.4s' }}>
-              <div className="supportCardTitle">Diligências</div>
-              <div className="supportCardBody">
-                Diligências em fóruns, tribunais e órgãos administrativos, com
-                agilidade e retorno objetivo sobre cada etapa cumprida.
-              </div>
+              <h3>
+                Perfil verificado no  <img src={escavadorTitlePng} alt="EscavadorTitle" className='escavadorTitlePng' />
+              </h3>
+              <p>
+                Transparência e acompanhamento público dos processos em que atuo.
+              </p>
+              <a
+                href="https://www.escavador.com/nomes/victor-araujo-da-silva-951154e42b"
+                target="_blank"
+                className="escavadorLink"
+              >
+                Ver perfil completo →
+              </a>
             </div>
           </div>
+          <AtuacoesGrafico />
         </div>
+
+
       </div>
     </section>
   );
