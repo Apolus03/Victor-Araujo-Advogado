@@ -560,11 +560,13 @@ function IdentitySection() {
 
             {/* FRASE */}
             <div className="quoteOverlay">
-              <span className="quoteIcon">“</span>
-              <p>
-                Onde houver um direito a ser defendido, haverá dedicação total
-                em cada etapa do caminho.
+              <span className="quoteMark">“</span>
+
+              <p className="quoteText">
+                Onde houver um direito a ser defendido, haverá dedicação total em cada etapa do caminho.
               </p>
+
+              <div className="quoteLine" />
             </div>
           </div>
         </div>
@@ -666,7 +668,7 @@ function OfficeSection() {
             Conheça o meu <em>escritório</em>.
           </h2>
 
-     
+
           <a
             href="https://www.google.com/maps?q=Av.+Marginal+do+Oratorio,+37+Santo+Andre"
             target="_blank"
@@ -674,7 +676,7 @@ function OfficeSection() {
           >
             Av. Marginal Oratório, Jardim Utinga, 37
           </a>
-               <div className="titleDividerCentralize" />
+          <div className="titleDividerCentralize" />
 
         </div>
 

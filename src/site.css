@@ -763,21 +763,40 @@ img.escavadorTitlePng {
 /* FRASE SOBRE A IMAGEM */
 .quoteOverlay {
   position: absolute;
-  bottom: 25px;
-  left: 25px;
-  right: 25px;
+  bottom: 30px;
+  left: 30px;
+  right: 30px;
   color: #fff;
 }
 
-.quoteIcon {
-  font-size: 40px;
+/* ASPAS GRANDES */
+.quoteMark {
+  width: fit-content;
+  height: 65px;
+  font-size: 150px;
   color: #d4af37;
+  font-family: serif;
+  display: block;
+  margin-bottom: 10px;
 }
 
-.quoteOverlay p {
-  font-size: 16px;
+/* TEXTO */
+.quoteText {
+  font-size: 18px;
   line-height: 1.6;
-  margin-top: 8px;
+  font-weight: 400;
+  color: #ffffff;
+  font-style: italic;
+  /* efeito leve de destaque */
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* LINHA DOURADA EMBAIXO */
+.quoteLine {
+  width: 250px;
+  height: 2px;
+  background: linear-gradient(90deg, #d4af37, transparent);
+  margin-top: 12px;
 }
 
 /* ANIMAÇÃO */
