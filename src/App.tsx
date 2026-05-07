@@ -6,7 +6,9 @@ import {
   type FormEvent,
 } from 'react';
 import logoPng from './assets/Logo.png';
+import logoDouradaPng from './assets/LogoDourada.png';
 import vitorPng from '../img/img_vitor.png';
+import vitorReadPng from '../img/img_vitor_read.png';
 import temisPng from '../img/img_temis.png';
 import officePng from '../img/img_escritório.png';
 import escavadorPng from '../img/img_escavador.png';
@@ -22,7 +24,7 @@ import {
   YAxis,
   Tooltip,
 } from "recharts";
-
+import { Scale, FileText, Folder } from "lucide-react";
 
 type NavItem = { id: string; label: string };
 
@@ -392,7 +394,7 @@ function SiteHeader(props: { nav: NavItem[] }) {
           role="banner"
           aria-label="Buzzetto & Salles Advogados Associados"
         >
-          <img src={logoPng} alt="BUZZETTO & SALLES" className="brandLogo" />
+          <img src={logoDouradaPng} alt="VictorLogo" className="brandLogo" />
         </div>
 
         <nav className="navDesktop" aria-label="Navegação principal">
@@ -412,7 +414,9 @@ function SiteHeader(props: { nav: NavItem[] }) {
           <button
             type="button"
             className="consultoriaBtn"
-            onClick={() => scrollToId('formulario-contato')}
+            onClick={() =>
+      window.open('https://wa.me/5511954258694', '_blank')
+    }
           >
             CONSULTORIA
           </button>
@@ -474,12 +478,17 @@ function HeroSection() {
     >
       <div className="heroInner">
         <div className="heroCenter">
-          <img src={logoPng} alt="Vitor Araujo" className="heroLogo" />
-          <span className="heroSince">DESDE 2020</span>
+          <img src={logoDouradaPng} alt="Vitor Araujo" className="heroLogoDourada" />
+          <span className="heroSince"></span>
+          <span className="sectionHeaderCentralize" id='inicialSection'>
+            <span className="line" />
+            <span className="sectionTag">DESDE 2020</span>
+            <span className="line" />
 
-          <h1 className="heroTitle">VICTOR ARAUJO</h1>
+          </span>
+          <h1 className="heroTitle">VICTOR ARAUJO  <p class="heroSubtitle">SOCIEDADE INDIVIDUAL DE ADVOCACIA</p>
 
-          <p className="heroSubtitle">SOCIEDADE INDIVIDUAL DE ADVOCACIA</p>
+           <div className="titleDividerCentralize" id='titleDividerCentralizeSection'/></h1>
 
           <div className="heroActions">
             <a href="https://wa.me/5511954258694">
@@ -488,7 +497,7 @@ function HeroSection() {
               </button>
             </a>
             <button
-              className="ghostBtn"
+              className="primaryBtn"
               type="button"
               onClick={() => scrollToId('escritorio')}
             >
@@ -759,56 +768,7 @@ function SpecialtiesSection() {
     </section>
   );
 }
-const dataGrafico = [
-  { ano: "2022", processos: 60 },
-  { ano: "2023", processos: 75 },
-  { ano: "2024", processos: 50 },
-  { ano: "2025", processos: 40 },
-  { ano: "2026", processos: 15 },
-];
 
-
-function AtuacoesGrafico() {
-  return (
-    <div className="escavadorExtra">
-
-
-
-      {/* GRÁFICO */}
-      <div className="graficoCard">
-        <div className="graficoHeader">
-          <h4>Processos por ano</h4>
-          <span className="graficoBadge">Dados públicos</span>
-        </div>
-
-        <ResponsiveContainer width="100%" height={220}>
-          <AreaChart data={dataGrafico}>
-            <defs>
-              <linearGradient id="colorProcessos" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#b68b2c" stopOpacity={0.4} />
-                <stop offset="95%" stopColor="#b68b2c" stopOpacity={0} />
-              </linearGradient>
-            </defs>
-
-            <XAxis dataKey="ano" stroke="#aaa" />
-            <YAxis stroke="#aaa" />
-            <Tooltip />
-
-            <Area
-              type="monotone"
-              dataKey="processos"
-              stroke="#b68b2c"
-              fill="url(#colorProcessos)"
-              strokeWidth={2.5}
-            />
-          </AreaChart>
-        </ResponsiveContainer>
-      </div>
-
-
-    </div>
-  );
-}
 
 function SupportSection() {
   const { ref: textRef, show: textShow } = useScrollReveal<HTMLDivElement>();
@@ -817,12 +777,7 @@ function SupportSection() {
   return (
     <section id="apoio" className="section proceedingSection">
       <div className="container supportGrid">
-
-        {/* 🔴 ESQUERDA (vermelho) */}
-        <div
-          ref={textRef}
-          className={`supportText reveal ${textShow ? 'show' : ''}`}
-        >
+        <div className='titleContainer'>
           <span className="sectionHeader">
             <span className="line" />
             <span className="sectionTag">Apoio</span>
@@ -831,9 +786,12 @@ function SupportSection() {
             Se voce é advogado, conte <em>comigo</em> para apoio.
           </h2>
           <div className="titleDivider" />
-          <div className="kicker">
-
-          </div>
+        </div>
+        {/* 🔴 ESQUERDA (vermelho) */}
+        <div
+          ref={textRef}
+          className={`supportText reveal ${textShow ? 'show' : ''}`}
+        >
 
           <div
             ref={cardsRef}
@@ -842,32 +800,51 @@ function SupportSection() {
             <div className="supportCardsInner">
 
               <div className="supportCard">
-                <div className="supportCardTitle">Audiências</div>
-                <div className="supportCardBody">
-                  Acompanhamento em audiências cíveis e criminais, com registro fiel do ato e alinhamento à estratégia definida para o caso.
+                <div className="card">
+                  <div className="icon">
+                    <Scale size={70} />
+                  </div>
+                  <div className="supportCardBody">
+                    <div className="supportCardTitle">Audiências</div>
+                    Acompanhamento em audiências cíveis e criminais, com registro fiel do ato e alinhamento à estratégia definida para o caso.
+                  </div>
                 </div>
               </div>
 
               <div className="supportCard supportCardHighlight">
-                <div className="supportCardTitle">Pareceres</div>
-                <div className="supportCardBody">
-                  Pareceres com análise aprofundada e fundamentação técnica consistente, orientando decisões com segurança jurídica.
+                <div className="card">
+                  <div className="icon">
+                    <FileText size={70} />
+                  </div>
+
+                  <div className="supportCardBody">
+                    <div className="supportCardTitle">Pareceres</div>
+                    Pareceres com análise aprofundada e fundamentação técnica consistente, orientando decisões com segurança jurídica.
+                  </div>
                 </div>
               </div>
 
               <div className="supportCard">
-                <div className="supportCardTitle">Diligências</div>
-                <div className="supportCardBody">
-                  Diligências em fóruns, tribunais e órgãos administrativos, com agilidade e retorno objetivo sobre cada etapa cumprida.
+                <div className="card">
+                  <div className="icon">
+                    <Folder size={70} />
+                  </div>
+                  <div className="supportCardBody">
+                    <div className="supportCardTitle">Diligências</div>
+                    Diligências em fóruns, tribunais e órgãos administrativos, com agilidade e retorno objetivo sobre cada etapa cumprida.
+                  </div>
                 </div>
               </div>
+
 
             </div>
           </div>
         </div>
 
         {/* 🔵 DIREITA (azul) */}
-        <div className="escavadorPanel">
+
+
+        <div className="supportMedia">
 
           <div className="escavadorHeader">
             <div className='escavadorLogoContainer'>
@@ -875,9 +852,9 @@ function SupportSection() {
             </div>
 
             <div className='escavadorLabelContainer'>
-
               <h3>
-                Perfil verificado no  <img src={escavadorTitlePng} alt="EscavadorTitle" className='escavadorTitlePng' />
+                Perfil verificado no
+                <img src={escavadorTitlePng} alt="EscavadorTitle" className='escavadorTitlePng' />
               </h3>
               <p>
                 Transparência e acompanhamento público dos processos em que atuo.
@@ -887,11 +864,16 @@ function SupportSection() {
                 target="_blank"
                 className="escavadorLink"
               >
-                Ver perfil completo →
+                Ver perfil completo
               </a>
             </div>
+
+
           </div>
-          <AtuacoesGrafico />
+
+          <div className="vitorReadWrapper">
+            <img src={vitorReadPng} alt="vitorReadPng" />
+          </div>
         </div>
 
 
@@ -1197,6 +1179,7 @@ function SiteFooter() {
       <div className="container footerInner">
         <div className="footerBrand">
           <img src={logoPng} alt="Vitor Advogado Logo" className="footerLogo" />
+
           <div className="footerBrandSub">
             VICTOR ARAUJO <br />
             SOCIEDADE INDIVIDUAL DE ADVOCACIA
@@ -1231,10 +1214,10 @@ function SiteFooter() {
 
 export default function App() {
   const nav: NavItem[] = [
-    { id: 'escritorio', label: 'ESCRITÓRIO' },
-    { id: 'sobre', label: 'SOBRE' },
     { id: 'atuacao', label: 'ATUAÇÃO' },
     { id: 'apoio', label: 'APOIO' },
+    { id: 'escritorio', label: 'ESCRITÓRIO' },
+    { id: 'sobre', label: 'SOBRE' },
     { id: 'contato', label: 'CONTATO' },
   ];
 
@@ -1244,9 +1227,11 @@ export default function App() {
       <main>
         <HeroSection />
         <SpecialtiesSection />
+
         <SupportSection />
-        <IdentitySection />
         <OfficeSection />
+        <IdentitySection />
+
         <ContactSection />
       </main>
       <SiteFooter />
