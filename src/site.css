@@ -1799,6 +1799,18 @@ div#titleDividerCentralizeSection {
   color: #8b2222;
 }
 
+.fieldCharCount {
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 1.3;
+  text-align: right;
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.fieldCharCountWarn {
+  color: #c9ac6d;
+}
+
 
 
 .sendBtn {
@@ -1826,31 +1838,6 @@ div#titleDividerCentralizeSection {
 .sendBtn:disabled {
   opacity: 0.65;
   cursor: not-allowed;
-}
-
-.contactMailtoHint {
-  margin: 16px 0 0;
-  font-size: 12px;
-  line-height: 1.45;
-  color: rgba(43, 27, 18, 0.55);
-}
-
-.contactMailtoLink {
-  color: var(--brown);
-  font-weight: 600;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.contactMailtoLink:hover {
-  color: #5a3d28;
-}
-
-.contactMailtoHintSub {
-  display: block;
-  margin-top: 4px;
-  font-size: 11px;
-  color: rgba(43, 27, 18, 0.45);
 }
 
 /* Footer */
