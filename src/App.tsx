@@ -16,14 +16,6 @@ import escavadorTitlePng from '../img/img_escavadorTitle.png';
 import { FaLinkedinIn, FaInstagram, FaWhatsapp } from 'react-icons/fa';
 import { SpecialtyCard, type SpecialtyItem } from './components/SpecialtyCard';
 import { useScrollReveal } from './hooks/useScrollReveal';
-import {
-  ResponsiveContainer,
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  Tooltip,
-} from "recharts";
 import { Scale, FileText, Folder } from "lucide-react";
 
 type NavItem = { id: string; label: string };
@@ -486,7 +478,7 @@ function HeroSection() {
             <span className="line" />
 
           </span>
-          <h1 className="heroTitle">VICTOR ARAUJO  <p class="heroSubtitle">SOCIEDADE INDIVIDUAL DE ADVOCACIA</p>
+          <h1 className="heroTitle">VICTOR ARAUJO  <p className="heroSubtitle">SOCIEDADE INDIVIDUAL DE ADVOCACIA</p>
 
            <div className="titleDividerCentralize" id='titleDividerCentralizeSection'/></h1>
 
