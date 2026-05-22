@@ -9,6 +9,7 @@ import escavadorPng from '../img/img_escavador.png';
 import escavadorTitlePng from '../img/img_escavadorTitle.png';
 import { FaLinkedinIn, FaInstagram, FaWhatsapp } from 'react-icons/fa';
 import { SpecialtyCard, type SpecialtyItem } from './components/SpecialtyCard';
+import { WhatsAppFloat } from './components/WhatsAppFloat';
 import { useScrollReveal } from './hooks/useScrollReveal';
 import { Scale, FileText, Folder } from 'lucide-react';
 import {
@@ -597,7 +598,7 @@ function SupportSection() {
               <div className="supportCard">
                 <div className="card">
                   <div className="icon">
-                    <Scale size={70} />
+                    <Scale size={48} />
                   </div>
                   <div className="supportCardBody">
                     <div className="supportCardTitle">Audiências</div>
@@ -609,7 +610,7 @@ function SupportSection() {
               <div className="supportCard supportCardHighlight">
                 <div className="card">
                   <div className="icon">
-                    <FileText size={70} />
+                    <FileText size={48} />
                   </div>
 
                   <div className="supportCardBody">
@@ -622,7 +623,7 @@ function SupportSection() {
               <div className="supportCard">
                 <div className="card">
                   <div className="icon">
-                    <Folder size={70} />
+                    <Folder size={48} />
                   </div>
                   <div className="supportCardBody">
                     <div className="supportCardTitle">Diligências</div>
@@ -985,6 +986,7 @@ export default function App() {
         <ContactSection />
       </main>
       <SiteFooter />
+      <WhatsAppFloat />
     </div>
   );
 }

@@ -37,6 +37,7 @@ body {
 
 .siteRoot {
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 .container {
@@ -225,6 +226,9 @@ body {
   left: 0;
   right: 0;
   top: var(--header-height);
+  max-height: calc(100dvh - var(--header-height));
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   background: rgba(247, 246, 241, 0.98);
   border-bottom: 1px solid rgba(43, 27, 18, 0.06);
 }
@@ -260,6 +264,7 @@ body {
   align-items: flex-start;
   padding-top: var(--header-height);
   box-sizing: border-box;
+  overflow-x: clip;
 }
 
 .hero::before {
@@ -450,11 +455,10 @@ body {
 /* BOTÕES */
 .heroActions {
   display: flex;
+  flex-wrap: wrap;
   gap: 15px;
   justify-content: center;
   align-items: center;
-  white-space: nowrap;
-
 }
 
 .heroActions>* {
@@ -793,7 +797,7 @@ span#inicialSection {
 }
 
 .sectionTitle {
-  font-size: 42px;
+  font-size: clamp(26px, 5vw, 42px);
   color: #2d1f17;
   margin-bottom: 20px;
 }
@@ -1286,12 +1290,36 @@ span#inicialSection {
   grid-template-columns: 1.1fr 0.9fr;
   gap: 30px;
   grid-auto-flow: row;
-  align-items: start
+  align-items: start;
+}
+
+.titleContainer {
+  grid-column: 1 / -1;
+  min-width: 0;
+}
+
+.supportText {
+  grid-column: 1;
+  min-width: 0;
+}
+
+.supportMedia {
+  grid-column: 2;
+  min-width: 0;
 }
 
 section#apoio {
-  padding-bottom: 0;
+  padding-bottom: var(--section-padding-y);
+  overflow: visible;
+}
 
+.titleContainer .sectionHeader {
+  justify-content: flex-start;
+}
+
+.titleContainer .titleDivider {
+  margin-left: 0;
+  margin-right: auto;
 }
 
 
@@ -1328,12 +1356,6 @@ section#apoio {
   height: auto;
 }
 
-/* 🔴 ESQUERDA */
-.supportText {
-  grid-column: 1;
-}
-
-
 .supportTitle {
   margin: 0;
   margin-bottom: 15px;
@@ -1343,16 +1365,16 @@ section#apoio {
   line-height: 1.03;
 }
 
-.supportCardTitle {
-  font-weight: 600;
-  margin-bottom: 8px;
-  color: #000000;
+.supportCardBody {
+  font-size: clamp(14px, 2.8vw, 16px);
+  color: rgba(45, 37, 34, 0.72);
+  line-height: 1.65;
 }
 
-.supportCardBody {
-  font-size: 14px;
-  color: #ca1a1a;
-  line-height: 1.5;
+.supportCardBody .supportCardTitle {
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #2d1f17;
 }
 
 .supportCardsInner {
@@ -1404,9 +1426,11 @@ section#apoio {
 
 /* TÍTULO */
 .sectionTitle {
-  font-size: 44px;
+  font-size: clamp(26px, 5.5vw, 44px);
   color: #2d1f17;
   margin-bottom: 12px;
+  line-height: 1.12;
+  overflow-wrap: anywhere;
 }
 
 /* TRAJETÓRIA EM DESTAQUE (padding compensa recorte do background-clip em itálico) */
@@ -1443,8 +1467,14 @@ section#apoio {
 }
 
 div#titleDividerCentralizeSection {
-  width: 400px;
+  width: min(400px, 100%);
+  max-width: 100%;
   height: 2.2px;
+}
+
+.titleDivider,
+.titleDividerCentralize {
+  max-width: 100%;
 }
 
 .supportCard {
@@ -1963,20 +1993,120 @@ div#titleDividerCentralizeSection {
 
   .supportGrid {
     grid-template-columns: 1fr;
+    gap: 24px;
   }
 
-  .supportCardsInner {
-    grid-template-columns: 1fr 1fr;
+  .titleContainer,
+  .supportText,
+  .supportMedia {
+    grid-column: 1;
+    width: 100%;
+  }
+
+  .supportMedia {
+    gap: 28px;
     align-items: stretch;
   }
 
-  .supportCard {
-    height: 100%;
-    border-right: 1px solid rgba(43, 27, 18, 0.1);
+  .vitorReadWrapper {
+    margin-top: 0;
+    transform: none;
+    max-height: min(360px, 55vw);
+    overflow: hidden;
   }
 
-  .supportCard:nth-child(2n) {
+  .vitorReadWrapper img {
+    object-fit: contain;
+    object-position: center bottom;
+    filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.2));
+  }
+
+  .escavadorHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px;
+  }
+
+  .escavadorHeader h3 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    font-size: clamp(17px, 4.2vw, 22px);
+  }
+
+  .escavadorLabelContainer {
+    width: 100%;
+  }
+
+  .heroCenter {
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: none;
+    opacity: 1;
+    animation: none;
+    padding: 0 8px;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .heroActions {
+    white-space: normal;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .primaryBtn,
+  .ghostBtn {
+    white-space: normal;
+    height: auto;
+    min-height: 52px;
+  }
+
+  .sectionTitle {
+    font-size: clamp(24px, 6.5vw, 36px);
+  }
+
+  .titleDivider {
+    width: min(150px, 70%);
+  }
+
+  .supportCardsInner {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .supportCard {
+    height: auto;
     border-right: 0;
+    border-bottom: 1px solid rgba(43, 27, 18, 0.1);
+    text-align: left;
+  }
+
+  .supportCard:last-child {
+    border-bottom: 0;
+  }
+
+  .supportText {
+    align-items: stretch;
+    text-align: left;
+  }
+
+  .supportCards {
+    justify-content: stretch;
+  }
+
+  .supportCardsInner {
+    max-width: 100%;
+  }
+
+  section#apoio,
+  .contactSection {
+    padding-bottom: calc(var(--section-padding-y) + 72px);
   }
 
   .contactGrid {
@@ -2001,33 +2131,6 @@ div#titleDividerCentralizeSection {
 
   .identityFrame {
     margin: 0 auto;
-  }
-
-  .supportText {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .supportTitle {
-    text-align: center;
-  }
-
-  .supportCards {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  }
-
-  .supportCardsInner {
-    width: 100%;
-    max-width: 600px;
-  }
-
-  .supportCard {
-    text-align: center;
-    align-items: center;
   }
 
   .contactGrid {
@@ -2107,12 +2210,19 @@ div#titleDividerCentralizeSection {
     flex-direction: column;
     align-items: center;
     min-height: clamp(520px, 62vh, 720px);
+    grid-template-columns: 1fr;
   }
 
   .heroCenter {
     order: 1;
+    position: relative;
+    left: auto;
+    transform: none;
+    opacity: 1;
+    animation: none;
     max-width: 100%;
     flex: 0 0 auto;
+    padding: 0 12px;
   }
 
   .heroLeft {
@@ -2170,11 +2280,15 @@ div#titleDividerCentralizeSection {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    min-height: 95vh;
-    min-height: 95dvh;
+    min-height: auto;
     box-sizing: border-box;
     padding-top: calc(var(--header-height) + env(safe-area-inset-top, 0px) + 28px);
-    padding-bottom: max(16px, env(safe-area-inset-bottom, 0px));
+    padding-bottom: max(24px, env(safe-area-inset-bottom, 0px));
+  }
+
+  .hero::after {
+    background-size: min(260px, 72vw);
+    opacity: 0.1;
   }
 
   .heroLeft,
@@ -2184,7 +2298,7 @@ div#titleDividerCentralizeSection {
 
   .heroInner {
     flex: 1 1 auto;
-    min-height: 0;
+    min-height: clamp(420px, 72vh, 640px);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -2276,6 +2390,15 @@ div#titleDividerCentralizeSection {
 
   .supportCardBody {
     font-size: clamp(15px, 3.6vw, 17px);
+    color: rgba(45, 37, 34, 0.72);
+  }
+
+  section#apoio {
+    padding-bottom: calc(var(--section-padding-y) + 80px);
+  }
+
+  #contato {
+    scroll-margin-bottom: 72px;
   }
 
   .supportCard:last-child {
@@ -2301,6 +2424,28 @@ div#titleDividerCentralizeSection {
 
   .returnForm {
     padding: 26px 20px;
+  }
+
+  .supportCard .card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .supportCard .icon {
+    min-width: 48px;
+    height: 48px;
+  }
+
+  .supportCard .icon svg {
+    width: 44px;
+    height: 44px;
+  }
+
+  .whatsappFloat {
+    right: max(12px, env(safe-area-inset-right, 0px));
+    bottom: max(12px, env(safe-area-inset-bottom, 0px));
   }
 
   .consultoriaBtn,
@@ -2448,4 +2593,45 @@ div#titleDividerCentralizeSection {
 
 .identityMedia {
   transition-delay: 0.4s;
+}
+
+/* Botão flutuante WhatsApp */
+.whatsappFloat {
+  position: fixed;
+  right: clamp(16px, 3vw, 24px);
+  bottom: clamp(16px, 3vw, 24px);
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(52px, 12vw, 58px);
+  height: clamp(52px, 12vw, 58px);
+  border-radius: 50%;
+  background: #25d366;
+  color: #fff;
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.22),
+    0 0 0 3px rgba(255, 255, 255, 0.12);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.whatsappFloat:hover {
+  background: #20bd5a;
+  transform: scale(1.06);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.28),
+    0 0 0 3px rgba(255, 255, 255, 0.18);
+}
+
+.whatsappFloat:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+.whatsappFloatIcon {
+  width: clamp(28px, 6vw, 32px);
+  height: clamp(28px, 6vw, 32px);
 }
