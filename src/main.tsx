@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
 import './site.css'
+import "./components/hero/Hero.css";
 import logoPng from './assets/Logo.png'
 
 function setFavicon(href: string) {

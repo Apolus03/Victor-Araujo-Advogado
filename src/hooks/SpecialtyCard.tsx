@@ -1,5 +1,5 @@
 import type { ComponentType } from 'react';
-import { useScrollReveal } from '../hooks/useScrollReveal';
+import { useScrollReveal } from './useScrollReveal';
 
 export type SpecialtyItem = {
   title: string;

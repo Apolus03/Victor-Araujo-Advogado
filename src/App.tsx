@@ -1,29 +1,16 @@
-import { useState, useEffect, type TouchEvent, type FormEvent } from 'react';
+import { useState, useRef, useEffect, type TouchEvent } from 'react';
 import logoPng from './assets/Logo.png';
-import logoDouradaPng from './assets/LogoDourada.png';
-import vitorPng from '../img/img_vitor.png';
-import vitorReadPng from '../img/img_vitor_read.png';
-import temisPng from '../img/img_temis.png';
-import officePng from '../img/img_escritório.png';
-import escavadorPng from '../img/img_escavador.png';
-import escavadorTitlePng from '../img/img_escavadorTitle.png';
-import { FaLinkedinIn, FaInstagram, FaWhatsapp } from 'react-icons/fa';
-import { SpecialtyCard, type SpecialtyItem } from './components/SpecialtyCard';
-import { WhatsAppFloat } from './components/WhatsAppFloat';
+import vitorReadPng from './assets/img_vitor_read.png';
+import officePng from './assets/img_escritório.png';
+import { SpecialtyCard, type SpecialtyItem } from './hooks/SpecialtyCard';
+import { WhatsAppFloat } from './hooks/WhatsAppFloat';
 import { useScrollReveal } from './hooks/useScrollReveal';
-import { Scale, FileText, Folder } from 'lucide-react';
+import { Scale, FileText, Folder, ChevronLeft, ChevronRight } from 'lucide-react';
+import HeroSection from './components/hero/HeroSection';
+import NavbarSection from './components/navbar/NavbarSection';
+import ContactSection from "./components/contact/ContactSection";
+
 import {
-  CONTACT_FIELD_LIMITS,
-  EMPTY_CONTACT_FORM,
-  formatContactField,
-  trimContactPayload,
-  validateContactFormFields,
-  type ContactFieldErrors,
-  type ContactFormFieldKey,
-} from './contact/contactForm';
-import { sendContactViaWhatsApp } from './contact/contactWhatsApp';
-import {
-  CONTACT_WHATSAPP_DISPLAY,
   CONTACT_WHATSAPP_URL,
 } from './contact/constants';
 
@@ -171,7 +158,7 @@ const SPECIALTY_ITEMS: SpecialtyItem[] = [
   },
 ];
 
-const SPECIALTY_OPTIONS = SPECIALTY_ITEMS.map((item) => item.title);
+
 
 function scrollToId(id: string) {
   const el = document.getElementById(id);
@@ -179,133 +166,9 @@ function scrollToId(id: string) {
   el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-function SiteHeader(props: { nav: NavItem[] }) {
-  const [mobileOpen, setMobileOpen] = useState(false);
-
+function SiteHeader({ nav }: { nav: NavItem[] }) {
   return (
-    <header className="siteHeader">
-      <div className="container siteHeaderInner">
-        <div
-          className="brand"
-          role="banner"
-          aria-label="Buzzetto & Salles Advogados Associados"
-        >
-          <img src={logoDouradaPng} alt="VictorLogo" className="brandLogo" />
-        </div>
-
-        <nav className="navDesktop" aria-label="Navegação principal">
-          {props.nav.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              className="navLink"
-              onClick={() => scrollToId(item.id)}
-            >
-              {item.label}
-            </button>
-          ))}
-        </nav>
-
-        <div className="navDesktopRight">
-          <button
-            type="button"
-            className="consultoriaBtn"
-            onClick={() =>
-      window.open(CONTACT_WHATSAPP_URL, '_blank')
-    }
-          >
-            CONSULTORIA
-          </button>
-        </div>
-
-        <button
-          type="button"
-          className="mobileToggle"
-          aria-label={mobileOpen ? 'Fechar menu' : 'Abrir menu'}
-          aria-expanded={mobileOpen}
-          onClick={() => setMobileOpen((v) => !v)}
-        >
-          <span />
-          <span />
-          <span />
-        </button>
-      </div>
-
-      {mobileOpen && (
-        <div className="mobileMenu" role="dialog" aria-label="Menu">
-          <div className="container mobileMenuInner">
-            {props.nav.map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                className="mobileNavLink"
-                onClick={() => {
-                  setMobileOpen(false);
-                  scrollToId(item.id);
-                }}
-              >
-                {item.label}
-              </button>
-            ))}
-            <button
-              type="button"
-              className="consultoriaBtn mobileConsultoria"
-              onClick={() => {
-                setMobileOpen(false);
-                scrollToId('formulario-contato');
-              }}
-            >
-              CONSULTORIA
-            </button>
-          </div>
-        </div>
-      )}
-    </header>
-  );
-}
-
-function HeroSection() {
-  return (
-    <section
-      id="inicio"
-      className="hero container"
-      aria-label="Apresentação"
-      style={{ ['--hero-temis-url' as string]: `url(${temisPng})` }}
-    >
-      <div className="heroInner">
-        <div className="heroCenter">
-          <img src={logoDouradaPng} alt="Vitor Araujo" className="heroLogoDourada" />
-          <span className="heroSince"></span>
-          <span className="sectionHeaderCentralize" id='inicialSection'>
-            <span className="line" />
-            <span className="sectionTag">DESDE 2020</span>
-            <span className="line" />
-
-          </span>
-          <h1 className="heroTitle">VICTOR ARAUJO  <p className="heroSubtitle">SOCIEDADE INDIVIDUAL DE ADVOCACIA</p>
-
-           <div className="titleDividerCentralize" id='titleDividerCentralizeSection'/></h1>
-
-          <div className="heroActions">
-            <a href={CONTACT_WHATSAPP_URL}>
-              <button type="button" className="primaryBtn">
-                AGENDAR REUNIÃO
-              </button>
-            </a>
-            <button
-              className="primaryBtn"
-              type="button"
-              onClick={() => scrollToId('escritorio')}
-            >
-              CONHEÇA O ESCRITÓRIO
-            </button>
-          </div>
-        </div>
-        <div className="heroRight">
-          <img src={vitorPng} alt="Vitor Araujo" className="vitorImg" />
-        </div>
-      </div>
-    </section>
+    <NavbarSection nav={nav} scrollToId={scrollToId} />
   );
 }
 
@@ -323,17 +186,18 @@ function IdentitySection() {
           className={`identityText reveal ${textShow ? 'show' : ''}`}
         >
 
+          <div className='titleContainer'>
+            <span className="sectionHeader">
+              <span className="line" />
+              <span className="sectionTag">Sobre</span>
+            </span>
 
-          <span className="sectionHeader">
-            <span className="line" />
-            <span className="sectionTag">Sobre</span>
-          </span>
+            <h2 className="sectionTitle">
+              Conheça um pouco da <em>minha</em> trajetória.
+            </h2>
 
-          <h2 className="sectionTitle">
-            Conheça um pouco da <em>minha</em> trajetória.
-          </h2>
-
-          <div className="titleDivider" />
+            <div className="titleDivider" />
+          </div>
           <p className="lead">
             A <b>Victor Araujo Sociedade Individual de Advocacia</b> foi criada
             com o propósito de oferecer um atendimento jurídico próximo,
@@ -383,36 +247,43 @@ function IdentitySection() {
 function OfficeSection() {
   const slides = [
     {
-      type: 'image',
-      src: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=1200',
+      type: "image",
+      src: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=1200",
     },
     {
-      type: 'image',
-      src: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=1200',
+      type: "image",
+      src: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=1200",
     },
     {
-      type: 'image',
-      src: 'https://static.revistahaus.com.br/revistahaus/2024/05/02172529/revista-haus-projeto-de-arquitetura-escritorio-de-advocacia-submerso-studio-archa-divulgacao-5.jpg',
+      type: "image",
+      src: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=1200",
     },
     {
-      type: 'map',
-      src: 'https://www.google.com/maps?q=Av.+Marginal+do+Oratorio,+37+Santo+Andre&output=embed',
-      link: 'https://www.google.com/maps?q=Av.+Marginal+do+Oratorio,+37+Santo+Andre',
+      type: "map",
+      src: "https://www.google.com/maps?q=Av.+Marginal+do+Oratorio,+37+Santo+Andre&output=embed",
+      link: "https://www.google.com/maps?q=Av.+Marginal+do+Oratorio,+37+Santo+Andre",
     },
   ];
 
-  const extendedSlides = [slides[slides.length - 1], ...slides, slides[0]];
+  const extendedSlides = [
+    slides[slides.length - 1],
+    ...slides,
+    slides[0],
+  ];
 
   const [current, setCurrent] = useState(1);
   const [isTransitioning, setIsTransitioning] = useState(true);
   const [paused, setPaused] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+
+  const startX = useRef(0);
 
   useEffect(() => {
     if (paused) return;
 
     const interval = setInterval(() => {
       setCurrent((prev) => prev + 1);
-    }, 3000);
+    }, 4000);
 
     return () => clearInterval(interval);
   }, [paused]);
@@ -431,33 +302,41 @@ function OfficeSection() {
 
   useEffect(() => {
     if (!isTransitioning) {
-      setTimeout(() => setIsTransitioning(true), 50);
+      const timeout = setTimeout(() => {
+        setIsTransitioning(true);
+      }, 50);
+
+      return () => clearTimeout(timeout);
     }
   }, [isTransitioning]);
 
-  let startX = 0;
+  useEffect(() => {
+  const timer = setTimeout(() => {
+    setLoaded(true);
+    setCurrent(1);
+  }, 100);
+
+  
+  return () => clearTimeout(timer);
+}, []);
 
   const handleTouchStart = (e: TouchEvent) => {
-    startX = e.touches[0].clientX;
+    startX.current = e.touches[0].clientX;
   };
 
-  const handleTouchMove = (e: TouchEvent) => {
-    const moveX = e.touches[0].clientX;
-    const diff = startX - moveX;
+  const handleTouchEnd = (e: TouchEvent) => {
+    const endX = e.changedTouches[0].clientX;
+    const diff = startX.current - endX;
 
     if (diff > 50) {
       setCurrent((prev) => prev + 1);
-      startX = 0;
     }
 
     if (diff < -50) {
       setCurrent((prev) => prev - 1);
-      startX = 0;
     }
-  };
 
-  const handleTouchEnd = () => {
-    startX = 0;
+    startX.current = 0;
   };
 
   return (
@@ -469,20 +348,21 @@ function OfficeSection() {
             <span className="sectionTag">escritório</span>
             <span className="line" />
           </span>
+
           <h2 className="sectionTitle">
             Conheça o meu <em>escritório</em>.
           </h2>
 
-
           <a
             href="https://www.google.com/maps?q=Av.+Marginal+do+Oratorio,+37+Santo+Andre"
             target="_blank"
+            rel="noreferrer"
             className="officeAddress"
           >
             Av. Marginal Oratório, Jardim Utinga, 37
           </a>
-          <div className="titleDividerCentralize" />
 
+          <div className="titleDividerCentralize" />
         </div>
 
         <div
@@ -490,7 +370,6 @@ function OfficeSection() {
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
           onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
           <div
@@ -498,13 +377,18 @@ function OfficeSection() {
             onTransitionEnd={handleTransitionEnd}
             style={{
               transform: `translateX(-${current * 100}%)`,
-              transition: isTransitioning ? 'transform 0.5s ease' : 'none',
+              transition: isTransitioning
+                ? "transform 0.5s ease"
+                : "none",
             }}
           >
             {extendedSlides.map((slide, index) => (
               <div className="carouselSlide" key={index}>
-                {slide.type === 'image' ? (
-                  <img src={slide.src} alt="Escritório" />
+                {slide.type === "image" ? (
+                  <img
+                    src={slide.src}
+                    alt={`Escritório ${index}`}
+                  />
                 ) : (
                   <div className="mapWrapper">
                     <iframe
@@ -513,7 +397,12 @@ function OfficeSection() {
                       title="Localização do escritório"
                     />
 
-                    <a href={slide.link} target="_blank" className="mapButton">
+                    <a
+                      href={slide.link}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mapButton"
+                    >
                       📍 Abrir no Google Maps
                     </a>
                   </div>
@@ -522,18 +411,44 @@ function OfficeSection() {
             ))}
           </div>
 
+          {/* SETA ESQUERDA */}
+          <button
+            className="carouselArrow carouselArrowLeft"
+            onClick={() => setCurrent((prev) => prev - 1)}
+            aria-label="Slide anterior"
+          >
+            <ChevronLeft size={28} />
+          </button>
+
+          {/* SETA DIREITA */}
+          <button
+            className="carouselArrow carouselArrowRight"
+            onClick={() => setCurrent((prev) => prev + 1)}
+            aria-label="Próximo slide"
+          >
+            <ChevronRight size={28} />
+          </button>
+
           <div className="carouselDots">
-            {slides.map((_, index) => (
-              <button
-                key={index}
-                className={`dot ${index === current - 1 ? 'active' : ''}`}
-                onClick={() => setCurrent(index + 1)}
-              />
-            ))}
+            {slides.map((_, index) => {
+              const activeIndex =
+                current === 0
+                  ? slides.length - 1
+                  : current === slides.length + 1
+                    ? 0
+                    : current - 1;
+
+              return (
+                <button
+                  key={index}
+                  className={`dot ${activeIndex === index ? "active" : ""
+                    }`}
+                  onClick={() => setCurrent(index + 1)}
+                />
+              );
+            })}
           </div>
         </div>
-
-
       </div>
     </section>
   );
@@ -642,30 +557,6 @@ function SupportSection() {
 
         <div className="supportMedia">
 
-          <div className="escavadorHeader">
-            <div className='escavadorLogoContainer'>
-              <img src={escavadorPng} alt="Escavador" className='escavadorPng' />
-            </div>
-
-            <div className='escavadorLabelContainer'>
-              <h3>
-                Perfil verificado no
-                <img src={escavadorTitlePng} alt="EscavadorTitle" className='escavadorTitlePng' />
-              </h3>
-              <p>
-                Transparência e acompanhamento público dos processos em que atuo.
-              </p>
-              <a
-                href="https://www.escavador.com/nomes/victor-araujo-da-silva-951154e42b"
-                target="_blank"
-                className="escavadorLink"
-              >
-                Ver perfil completo
-              </a>
-            </div>
-
-
-          </div>
 
           <div className="vitorReadWrapper">
             <img src={vitorReadPng} alt="vitorReadPng" />
@@ -678,244 +569,7 @@ function SupportSection() {
   );
 }
 
-function ContactSection() {
-  const [form, setForm] = useState(EMPTY_CONTACT_FORM);
-  const [fieldErrors, setFieldErrors] = useState<ContactFieldErrors>({});
-  const { ref: leftRef, show: leftShow } = useScrollReveal<HTMLDivElement>();
-  const { ref: rightRef, show: rightShow } = useScrollReveal<HTMLDivElement>();
 
-  const clearFieldError = (field: ContactFormFieldKey) => {
-    setFieldErrors((prev) => {
-      if (!prev[field]) return prev;
-      const { [field]: _removed, ...rest } = prev;
-      return rest;
-    });
-  };
-
-  const handleFieldChange = (field: ContactFormFieldKey, value: string) => {
-    setForm((s) => ({
-      ...s,
-      [field]: formatContactField(field, value),
-    }));
-    clearFieldError(field);
-  };
-
-  const handleFieldBlur = (field: ContactFormFieldKey) => {
-    setForm((s) => {
-      const formatted = formatContactField(field, s[field], { trimEdges: true });
-      return formatted === s[field] ? s : { ...s, [field]: formatted };
-    });
-  };
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const payload = trimContactPayload(form);
-    setForm(payload);
-    const errors = validateContactFormFields(payload);
-    if (Object.keys(errors).length > 0) {
-      setFieldErrors(errors);
-      return;
-    }
-    setFieldErrors({});
-    sendContactViaWhatsApp(payload);
-    setForm(EMPTY_CONTACT_FORM);
-  };
-
-  return (
-    <section id="contato" className="section sectionDark contactSection">
-      <div className="container contactGrid">
-        <div
-          ref={leftRef}
-          className={`contactLeft reveal ${leftShow ? 'show' : ''}`}
-        >
-          <h2 className="contactTitle">Entre em contato.</h2>
-          <div className="kicker" style={{ color: '#fff' }}>
-            Entre em contato agora e entenda como posso te ajudar no seu caso.
-          </div>
-          <div className="contactDirect">
-            <a href={CONTACT_WHATSAPP_URL} className="contactRow">
-              <div className="contactIcon" aria-hidden="true">
-                <FaWhatsapp />
-              </div>
-              <div>
-                <div className="contactLabel">TELEFONE / WHATSAPP</div>
-                <div className="contactValue">{CONTACT_WHATSAPP_DISPLAY}</div>
-              </div>
-            </a>
-
-
-            <a
-              href="https://www.linkedin.com/in/victor-ara%C3%BAjo-586b98165/"
-              className="contactRow"
-            >
-              <div className="contactIcon" aria-hidden="true">
-                <FaLinkedinIn />
-              </div>
-              <div>
-                <div className="contactLabel">linkedin</div>
-                <div className="contactValue">Victor Araújo</div>
-              </div>
-            </a>
-
-            <a
-              href="https://www.instagram.com/ojuara1994/"
-              className="contactRow"
-            >
-              <div className="contactIcon" aria-hidden="true">
-                <FaInstagram />
-              </div>
-              <div>
-                <div className="contactLabel">INSTAGRAM</div>
-                <div className="contactValue">_araujoadvogados</div>
-              </div>
-            </a>
-          </div>
-        </div>
-
-        <div
-          ref={rightRef}
-          className={`contactRight reveal ${rightShow ? 'show' : ''}`}
-        >
-          <form
-            id="formulario-contato"
-            className="returnForm"
-            onSubmit={handleSubmit}
-          >
-            <div className="returnTitle">Solicite</div>
-
-            <label className="field" style={{ transitionDelay: '0.3s' }}>
-              <span
-                className={`fieldLabel ${fieldErrors.nome ? 'fieldLabelError' : ''}`}
-              >
-                NOME COMPLETO
-              </span>
-              <input
-                value={form.nome}
-                onChange={(e) => handleFieldChange('nome', e.target.value)}
-                onBlur={() => handleFieldBlur('nome')}
-                placeholder="Ex.: Maria Silva"
-                maxLength={CONTACT_FIELD_LIMITS.nome.max}
-                autoComplete="name"
-                className={fieldErrors.nome ? 'fieldInputError' : undefined}
-                aria-invalid={Boolean(fieldErrors.nome)}
-              />
-              {fieldErrors.nome ? (
-                <p className="fieldErrorMsg">{fieldErrors.nome}</p>
-              ) : null}
-            </label>
-
-            <label className="field" style={{ transitionDelay: '0.5s' }}>
-              <span
-                className={`fieldLabel ${fieldErrors.email ? 'fieldLabelError' : ''}`}
-              >
-                SEU E-MAIL{' '}
-                <span className="fieldOptional">(opcional)</span>
-              </span>
-              <input
-                value={form.email}
-                onChange={(e) => handleFieldChange('email', e.target.value)}
-                onBlur={() => handleFieldBlur('email')}
-                placeholder="exemplo@dominio.com"
-                type="email"
-                inputMode="email"
-                maxLength={CONTACT_FIELD_LIMITS.email.max}
-                autoComplete="email"
-                spellCheck={false}
-                className={fieldErrors.email ? 'fieldInputError' : undefined}
-                aria-invalid={Boolean(fieldErrors.email)}
-              />
-              {fieldErrors.email ? (
-                <p className="fieldErrorMsg">{fieldErrors.email}</p>
-              ) : null}
-            </label>
-
-            <label className="field" style={{ transitionDelay: '0.6s' }}>
-              <span
-                className={`fieldLabel ${fieldErrors.telefone ? 'fieldLabelError' : ''}`}
-              >
-                TELEFONE{' '}
-                <span className="fieldOptional">(opcional)</span>
-              </span>
-              <input
-                value={form.telefone}
-                onChange={(e) => handleFieldChange('telefone', e.target.value)}
-                onBlur={() => handleFieldBlur('telefone')}
-                placeholder="(11) 98765-4321"
-                type="tel"
-                inputMode="numeric"
-                maxLength={CONTACT_FIELD_LIMITS.telefone.max}
-                autoComplete="tel"
-                className={fieldErrors.telefone ? 'fieldInputError' : undefined}
-                aria-invalid={Boolean(fieldErrors.telefone)}
-              />
-              {fieldErrors.telefone ? (
-                <p className="fieldErrorMsg">{fieldErrors.telefone}</p>
-              ) : null}
-            </label>
-
-            <label className="field" style={{ transitionDelay: '0.7s' }}>
-              <span className="fieldLabel">
-                ESPECIALIDADE JURÍDICA{' '}
-                <span className="fieldOptional">(opcional)</span>
-              </span>
-              <div className="selectWrap">
-                <select
-                  value={form.especialidade}
-                  onChange={(e) =>
-                    setForm((s) => ({ ...s, especialidade: e.target.value }))
-                  }
-                  className="contactSelect"
-                >
-                  <option value="">Selecione uma área</option>
-                  {SPECIALTY_OPTIONS.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </label>
-
-            <label className="field" style={{ transitionDelay: '0.8s' }}>
-              <span
-                className={`fieldLabel ${fieldErrors.assunto ? 'fieldLabelError' : ''}`}
-              >
-                ASSUNTO JURÍDICO
-              </span>
-              <textarea
-                value={form.assunto}
-                onChange={(e) => handleFieldChange('assunto', e.target.value)}
-                onBlur={() => handleFieldBlur('assunto')}
-                placeholder="Descreva brevemente sua necessidade..."
-                maxLength={CONTACT_FIELD_LIMITS.assunto.max}
-                rows={5}
-                className={fieldErrors.assunto ? 'fieldInputError' : undefined}
-                aria-invalid={Boolean(fieldErrors.assunto)}
-              />
-              <p
-                className={`fieldCharCount ${
-                  form.assunto.length >= CONTACT_FIELD_LIMITS.assunto.max * 0.9
-                    ? 'fieldCharCountWarn'
-                    : ''
-                }`}
-                aria-live="polite"
-              >
-                {form.assunto.length}/{CONTACT_FIELD_LIMITS.assunto.max}
-              </p>
-              {fieldErrors.assunto ? (
-                <p className="fieldErrorMsg">{fieldErrors.assunto}</p>
-              ) : null}
-            </label>
-
-            <button type="submit" className="sendBtn" style={{ transitionDelay: '0.4s' }}>
-              ENVIAR PELO WHATSAPP
-            </button>
-          </form>
-        </div>
-      </div>
-    </section>
-  );
-}
 
 function SiteFooter() {
   const links: NavItem[] = [
@@ -955,7 +609,10 @@ function SiteFooter() {
 
           <div>
             © {new Date().getFullYear()} VICTOR ARAUJO SOCIEDADE INDIVIDUAL DE
-            ADVOCACIA. TODOS OS DIREITOS RESERVADOS.
+            ADVOCACIA. TODOS OS DIREITOS RESERVADOS.<a href="https://apolus.vercel.app/" className="footerApolusLink">
+              Desenvolvido por Apolus
+            </a>
+
           </div>
         </div>
       </div>
@@ -969,20 +626,21 @@ export default function App() {
     { id: 'apoio', label: 'APOIO' },
     { id: 'escritorio', label: 'ESCRITÓRIO' },
     { id: 'sobre', label: 'SOBRE' },
-    { id: 'contato', label: 'CONTATO' },
   ];
 
   return (
     <div className="siteRoot">
       <SiteHeader nav={nav} />
       <main>
-        <HeroSection />
+        <HeroSection
+          CONTACT_WHATSAPP_URL={CONTACT_WHATSAPP_URL}
+          scrollToId={scrollToId}
+        />
         <SpecialtiesSection />
 
         <SupportSection />
         <OfficeSection />
         <IdentitySection />
-
         <ContactSection />
       </main>
       <SiteFooter />
