@@ -1,6 +1,6 @@
 // Navbar.tsx
 import { useState } from 'react';
-import logoDouradaPng from '../../assets/LogoDourada.png';
+import logoDouradaPng from '../../assets/logoDourada.png';
 import './Navbar.css';
 type NavItem = {
   id: string;
