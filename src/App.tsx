@@ -274,7 +274,7 @@ function OfficeSection() {
   const [current, setCurrent] = useState(1);
   const [isTransitioning, setIsTransitioning] = useState(true);
   const [paused, setPaused] = useState(false);
-  const [loaded, setLoaded] = useState(false);
+
 
   const startX = useRef(0);
 
@@ -310,15 +310,14 @@ function OfficeSection() {
     }
   }, [isTransitioning]);
 
-  useEffect(() => {
+useEffect(() => {
   const timer = setTimeout(() => {
-    setLoaded(true);
     setCurrent(1);
   }, 100);
 
-  
   return () => clearTimeout(timer);
 }, []);
+
 
   const handleTouchStart = (e: TouchEvent) => {
     startX.current = e.touches[0].clientX;

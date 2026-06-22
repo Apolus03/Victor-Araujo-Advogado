@@ -2,10 +2,6 @@
 import { useState } from 'react';
 import logoDouradaPng from '../../assets/LogoDourada.png';
 import './Navbar.css';
-import {
-  FaWhatsapp
-} from '../import/Imports';
-
 type NavItem = {
   id: string;
   label: string;
