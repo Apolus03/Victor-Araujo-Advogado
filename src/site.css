@@ -25,6 +25,7 @@
   --container: 1120px;
   --header-height: 80px;
   --section-padding-y: 144px;
+  --hero-temis-url: url('./assets/img_temis.png');
 }
 
 * {
@@ -386,6 +387,8 @@ body {
 
   .section {
     scroll-margin-top: 84px;
+    padding-top: clamp(64px, 10vw, 96px);
+    padding-bottom: clamp(64px, 10vw, 96px);
   }
 }
 
@@ -407,6 +410,11 @@ body {
 
   .primaryBtn,
   .sendBtn {
+    width: 100%;
+  }
+
+  .heroActions .primaryBtn,
+  .heroActions .heroGoldBtn {
     width: 100%;
   }
 }

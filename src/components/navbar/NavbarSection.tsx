@@ -1,7 +1,7 @@
-// Navbar.tsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import logoDouradaPng from '../../assets/logoDourada.png';
 import './Navbar.css';
+
 type NavItem = {
   id: string;
   label: string;
@@ -18,11 +18,32 @@ export default function Navbar({
 }: NavbarProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  useEffect(() => {
+    if (!mobileOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setMobileOpen(false);
+      }
+    };
+
+    window.addEventListener('keydown', onKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [mobileOpen]);
+
+  const closeMenu = () => setMobileOpen(false);
+
   return (
     <header className="siteHeader">
       <div className="container siteHeaderInner">
 
-        {/* LOGO */}
         <div
           className="brand"
           role="banner"
@@ -35,7 +56,6 @@ export default function Navbar({
           />
         </div>
 
-        {/* DESKTOP NAV */}
         <nav className="navDesktop" aria-label="Navegação principal">
           {nav.map((item) => (
             <button
@@ -49,7 +69,6 @@ export default function Navbar({
           ))}
         </nav>
 
-        {/* CTA */}
         <div className="navDesktopRight">
           <button
             type="button"
@@ -57,11 +76,9 @@ export default function Navbar({
             onClick={() => scrollToId('formulario-contato')}
           >
             Contatos
-
           </button>
         </div>
 
-        {/* MOBILE BUTTON */}
         <button
           type="button"
           className="mobileToggle"
@@ -75,40 +92,49 @@ export default function Navbar({
         </button>
       </div>
 
-      {/* MOBILE MENU */}
       {mobileOpen && (
-        <div
-          className="mobileMenu"
-          role="dialog"
-          aria-label="Menu mobile"
-        >
-          <div className="container mobileMenuInner">
-            {nav.map((item) => (
+        <>
+          <button
+            type="button"
+            className="mobileBackdrop"
+            aria-label="Fechar menu"
+            onClick={closeMenu}
+          />
+
+          <div
+            className="mobileMenu"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Menu mobile"
+          >
+            <div className="container mobileMenuInner">
+              {nav.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  className="mobileNavLink"
+                  onClick={() => {
+                    closeMenu();
+                    scrollToId(item.id);
+                  }}
+                >
+                  {item.label}
+                </button>
+              ))}
+
               <button
-                key={item.id}
                 type="button"
-                className="mobileNavLink"
+                className="consultoriaBtn mobileConsultoria"
                 onClick={() => {
-                  setMobileOpen(false);
-                  scrollToId(item.id);
+                  closeMenu();
+                  scrollToId('formulario-contato');
                 }}
               >
-                {item.label}
+                CONTATOS
               </button>
-            ))}
-
-            <button
-              type="button"
-              className="consultoriaBtn mobileConsultoria"
-              onClick={() => {
-                setMobileOpen(false);
-                scrollToId('formulario-contato');
-              }}
-            >
-              CONTATOS
-            </button>
+            </div>
           </div>
-        </div>
+        </>
       )}
     </header>
   );

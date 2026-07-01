@@ -232,6 +232,19 @@ body {
   -webkit-overflow-scrolling: touch;
   background: rgba(247, 246, 241, 0.98);
   border-bottom: 1px solid rgba(43, 27, 18, 0.06);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+}
+
+.mobileBackdrop {
+  position: fixed;
+  inset: 0;
+  top: var(--header-height);
+  z-index: 55;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: rgba(20, 14, 10, 0.35);
+  cursor: pointer;
 }
 
 .mobileMenuInner {
@@ -243,10 +256,11 @@ body {
 }
 
 .mobileNavLink {
-  text-align: right;
-  padding: 14px 4px 14px 12px;
+  text-align: center;
+  padding: 16px 12px;
   background: transparent;
   border: 0;
+  border-bottom: 1px solid rgba(43, 27, 18, 0.06);
   cursor: pointer;
   font-size: 13px;
   letter-spacing: 2px;
@@ -255,8 +269,10 @@ body {
 }
 
 .mobileConsultoria {
-  margin-top: 0;
-  align-self: flex-end;
+  margin-top: 8px;
+  align-self: stretch;
+  width: 100%;
+  text-align: center;
 }
 
 .escavadorBox {
@@ -556,43 +572,37 @@ span#inicialSection {
 .identityGrid {
   display: grid;
   grid-template-columns: 1.1fr 1fr;
-  gap: 60px;
+  gap: clamp(32px, 5vw, 60px);
   align-items: center;
 }
 
-/* TEXTO */
-.sectionTag {
-  display: inline-block;
-  font-size: 12px;
-  letter-spacing: 2px;
-  color: #b89b5e;
-  margin-bottom: 10px;
-  text-transform: uppercase;
+.identityHeading {
+  width: 100%;
+  margin-bottom: clamp(8px, 2vw, 16px);
 }
 
-.sectionTitle {
-  font-size: clamp(26px, 5vw, 42px);
-  color: #2d1f17;
-  margin-bottom: 20px;
+.identityHeading .titleDividerCentralize {
+  margin-inline: auto;
 }
 
-.sectionTitle em {
-  font-style: italic;
+.identityText {
+  min-width: 0;
 }
 
-.lead {
-  font-size: 16px;
-  line-height: 1.7;
-  color: #5a4a42;
-  margin-bottom: 16px;
+.identityText .lead,
+.identityText .body {
+  max-width: 520px;
 }
 
 .identityVisual {
   position: relative;
+  width: 100%;
+  min-width: 0;
 }
 
 .imageWrapper {
   position: relative;
+  width: 100%;
   border-radius: 4px;
   overflow: hidden;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
@@ -601,7 +611,10 @@ span#inicialSection {
 /* IMAGEM */
 .officeImg {
   width: 100%;
-  height: 420px;
+  height: auto;
+  min-height: 280px;
+  max-height: 480px;
+  aspect-ratio: 16 / 10;
   object-fit: cover;
   display: block;
 }
@@ -1192,85 +1205,35 @@ span#inicialSection {
 }
 
 /* Support */
-/* GRID PRINCIPAL */
-.supportGrid {
+.supportCardsGrid {
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 30px;
-  grid-auto-flow: row;
-  align-items: start;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  padding-top: clamp(40px, 6vw, 72px);
 }
 
-.titleContainer {
-  grid-column: 1 / -1;
-  min-width: 0;
-}
-
-.supportText {
-  grid-column: 1;
-  min-width: 0;
-}
-
-.supportMedia {
-  grid-column: 2;
-  min-width: 0;
-}
-
-section#apoio {
-  padding-bottom: 0;
-  overflow: visible;
-}
-
-.titleContainer .sectionHeader {
-  justify-content: flex-start;
-}
-
-.titleContainer .titleDivider {
-  margin-left: 0;
-  margin-right: auto;
-}
-
-
-.vitorReadWrapper {
-  position: relative;
-  width: 100%;
+.supportCard {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(43, 27, 18, 0.12);
+  box-shadow: 0 22px 45px rgba(0, 0, 0, 0.08);
+  border-radius: 4px;
+  padding: clamp(30px, 3.2vw, 38px) clamp(26px, 2.8vw, 34px);
   height: 100%;
-
-  margin-top: 144px;
-  transform: scale(1.2);
-  z-index: 0;
-  /* ou remove */
+  transition:
+    transform 240ms ease,
+    box-shadow 240ms ease,
+    border-color 240ms ease,
+    background-color 240ms ease;
 }
 
-.vitorReadWrapper img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  filter: drop-shadow(21px 0px 17px rgba(0, 0, 0, 0.25));
-}
-
-
-.supportMedia {
+.supportCard .card {
   display: flex;
   flex-direction: column;
-  gap: 80px;
-  align-items: center;
-}
-
-
-.supportImage {
-  max-width: 100%;
-  height: auto;
-}
-
-.supportTitle {
+  align-items: flex-start;
+  gap: 18px;
+  height: 100%;
   margin: 0;
-  margin-bottom: 15px;
-  font-family: 'Playfair Display', serif;
-  font-weight: 700;
-  font-size: clamp(30px, 5vw, 48px);
-  line-height: 1.03;
+  padding: 0;
 }
 
 .supportCardBody {
@@ -1283,14 +1246,6 @@ section#apoio {
   margin-top: 0;
   margin-bottom: 10px;
   color: #2d1f17;
-}
-
-.supportCardsInner {
-  margin-top: 10px;
-  display: grid;
-  gap: 0;
-  background: transparent;
-  align-items: stretch;
 }
 
 /* HEADER COM LINHA */
@@ -1385,28 +1340,8 @@ div#titleDividerCentralizeSection {
   max-width: 100%;
 }
 
-.supportCard {
-  background: rgba(255, 255, 255, 0.72);
-  padding: 24px;
-  border: 1px solid rgba(43, 27, 18, 0.06);
-  transition:
-    transform 240ms ease,
-    box-shadow 240ms ease,
-    border-color 240ms ease,
-    background-color 240ms ease;
-}
-
-
-
-.supportIndex {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(13px, 1.8vw, 15px);
-  letter-spacing: 2px;
-  color: rgba(45, 37, 34, 0.22);
-}
-
 .supportCardTitle {
-  margin-top: 14px;
+  margin-top: 0;
   font-family: 'Playfair Display', serif;
   font-size: clamp(16px, 2.2vw, 19px);
   font-weight: 700;
@@ -1417,7 +1352,7 @@ div#titleDividerCentralizeSection {
 
 @media (min-width: 981px) {
   .supportCard {
-    padding: 24px 16px 18px;
+    padding: clamp(32px, 2.4vw, 40px) clamp(28px, 2vw, 36px);
   }
 
   .supportIndex {
@@ -1447,7 +1382,7 @@ div#titleDividerCentralizeSection {
   inset: 0;
   width: 100%;
   height: 100%;
-  background-image: url('./assets/Logo.png');
+  background-image: url('../../assets/Logo.png');
   background-repeat: no-repeat;
   background-position: left center;
   background-size: contain;
@@ -1847,6 +1782,10 @@ div#titleDividerCentralizeSection {
 
 /* Responsive */
 @media (max-width: 980px) {
+  :root {
+    --section-padding-y: clamp(64px, 10vw, 96px);
+  }
+
   .navDesktop {
     display: none;
   }
@@ -1886,45 +1825,31 @@ div#titleDividerCentralizeSection {
 
   .identityGrid {
     grid-template-columns: 1fr;
-    gap: 26px;
+    gap: clamp(24px, 4vw, 36px);
+    align-items: start;
   }
 
-  .identityMedia {
-    justify-content: flex-start;
+  .identityText {
+    text-align: left;
+    align-items: flex-start;
+  }
+
+  .identityHeading {
+    text-align: center;
+  }
+
+  .identityVisual {
+    width: 100%;
   }
 
   .specialtiesGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .supportGrid {
+  .supportCardsGrid {
     grid-template-columns: 1fr;
-    gap: 24px;
-  }
-
-  .titleContainer,
-  .supportText,
-  .supportMedia {
-    grid-column: 1;
-    width: 100%;
-  }
-
-  .supportMedia {
-    gap: 28px;
-    align-items: stretch;
-  }
-
-  .vitorReadWrapper {
-    margin-top: 0;
-    transform: none;
-    max-height: min(360px, 55vw);
-    overflow: hidden;
-  }
-
-  .vitorReadWrapper img {
-    object-fit: contain;
-    object-position: center bottom;
-    filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.2));
+    gap: 18px;
+    padding-top: clamp(32px, 5vw, 48px);
   }
 
   .escavadorHeader {
@@ -1955,35 +1880,9 @@ div#titleDividerCentralizeSection {
     width: min(150px, 70%);
   }
 
-  .supportCardsInner {
-    grid-template-columns: 1fr;
-    align-items: stretch;
-    width: 100%;
-    max-width: 100%;
-  }
-
   .supportCard {
-    height: auto;
-    border-right: 0;
-    border-bottom: 1px solid rgba(43, 27, 18, 0.1);
+    padding: 28px 24px 26px;
     text-align: left;
-  }
-
-  .supportCard:last-child {
-    border-bottom: 0;
-  }
-
-  .supportText {
-    align-items: stretch;
-    text-align: left;
-  }
-
-  .supportCards {
-    justify-content: stretch;
-  }
-
-  .supportCardsInner {
-    max-width: 100%;
   }
 
   section#apoio,
@@ -1993,49 +1892,71 @@ div#titleDividerCentralizeSection {
 
   .contactGrid {
     grid-template-columns: 1fr;
-    text-align: left;
+    text-align: center;
   }
 
   .contactRight {
-    justify-content: flex-start;
+    justify-content: center;
+    width: 100%;
   }
 
   .identityText {
-    text-align: center;
+    text-align: left;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
   }
 
-  .identityMedia {
-    justify-content: center;
+  .identityVisual {
+    width: 100%;
   }
 
-  .identityFrame {
-    margin: 0 auto;
+  .officeImg {
+    min-height: 220px;
+    max-height: min(52vw, 360px);
   }
 
-  .contactGrid {
-    text-align: center;
+  .quoteOverlay {
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
   }
 
-  .kicker {
-    text-align: center;
+  .quoteMark {
+    font-size: clamp(56px, 14vw, 80px);
+    height: auto;
+    line-height: 0.8;
+    margin-bottom: 6px;
+  }
+
+  .quoteText {
+    font-size: clamp(14px, 3.6vw, 16px);
+    line-height: 1.5;
+  }
+
+  .quoteLine {
+    width: min(180px, 55%);
+    margin-top: 10px;
+  }
+
+  .carouselSlide {
+    height: min(42vw, 360px);
+    min-height: 220px;
   }
 
   .contactLeft {
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: left;
+    text-align: center;
+  }
+
+  .kicker {
+    text-align: center;
+    flex-wrap: wrap;
   }
 
   .contactDirect {
-    width: 100%;
-  }
-
-  .contactRight {
-    justify-content: center;
     width: 100%;
   }
 
@@ -2134,17 +2055,9 @@ div#titleDividerCentralizeSection {
     height: 36px;
   }
 
-  .supportCardsInner {
-    grid-template-columns: 1fr;
-    align-items: stretch;
-  }
-
   .supportCard {
-    height: auto;
-    border-right: 0;
-    border-bottom: 1px solid rgba(43, 27, 18, 0.1);
     min-height: 0;
-    padding: 28px 22px 24px;
+    padding: 26px 22px 24px;
   }
 
   .supportCardTitle {
@@ -2158,6 +2071,16 @@ div#titleDividerCentralizeSection {
 
   section#apoio {
     padding-bottom: calc(var(--section-padding-y) + 80px);
+  }
+
+  .quoteCard {
+    max-width: 100%;
+    padding: 22px 20px 22px 24px;
+    text-align: left;
+  }
+
+  .identityText .sectionTitle {
+    font-size: clamp(26px, 7vw, 36px);
   }
 
   #contato {
@@ -2192,8 +2115,8 @@ div#titleDividerCentralizeSection {
   .supportCard .card {
     flex-direction: column;
     align-items: flex-start;
-    gap: 12px;
-    padding: 16px;
+    gap: 16px;
+    padding: 0;
   }
 
   .supportCard .icon {
@@ -2302,16 +2225,12 @@ div#titleDividerCentralizeSection {
 }
 
 /* Quando a seção aparece, eles animam */
-.supportCards.show .supportCard {
+.supportCardsGrid.show .supportCard {
   opacity: 1;
-  background: rgba(255, 255, 255, 0.9);
   transform: translateY(0);
-   border-color: rgba(43, 27, 18, 0.12);
-  box-shadow: 0 22px 45px rgba(0, 0, 0, 0.08);
 }
 
-
-.identityMedia {
+.identityVisual {
   transition-delay: 0.4s;
 }
 

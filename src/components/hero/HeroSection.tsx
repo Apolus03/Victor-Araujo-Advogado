@@ -20,7 +20,7 @@ export default function HeroSection({
   return (
     <section
       id="inicio"
-      className="hero container"
+      className="hero"
       aria-label="Apresentação"
 
     >
@@ -55,18 +55,16 @@ export default function HeroSection({
             <span className="line" />
           </span>
 
-          <h1 className="heroTitle">
-            VICTOR ARAUJO
+          <h1 className="heroTitle">VICTOR ARAUJO</h1>
 
-            <p className="heroSubtitle">
-              SOCIEDADE INDIVIDUAL DE ADVOCACIA
-            </p>
+          <p className="heroSubtitle">
+            SOCIEDADE INDIVIDUAL DE ADVOCACIA
+          </p>
 
-            <div
-              className="titleDividerCentralize"
-              id="titleDividerCentralizeSection"
-            />
-          </h1>
+          <div
+            className="titleDividerCentralize"
+            id="titleDividerCentralizeSection"
+          />
 
           <div className="heroActions">
 
@@ -85,7 +83,7 @@ export default function HeroSection({
 
 
             <button
-              className="primaryBtn"
+              className="primaryBtn heroGoldBtn"
               type="button"
               onClick={() => scrollToId('escritorio')}
             >

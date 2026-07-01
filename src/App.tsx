@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect, type TouchEvent } from 'react';
 import logoPng from './assets/Logo.png';
-import vitorReadPng from './assets/img_vitor_read.png';
 import officePng from './assets/img_escritório.png';
 import { SpecialtyCard, type SpecialtyItem } from './hooks/SpecialtyCard';
 import { WhatsAppFloat } from './hooks/WhatsAppFloat';
@@ -186,17 +185,18 @@ function IdentitySection() {
           className={`identityText reveal ${textShow ? 'show' : ''}`}
         >
 
-          <div className='titleContainer'>
-            <span className="sectionHeader">
+          <div className="titleContainer identityHeading">
+            <span className="sectionHeaderCentralize">
               <span className="line" />
               <span className="sectionTag">Sobre</span>
+              <span className="line" />
             </span>
 
             <h2 className="sectionTitle">
               Conheça um pouco da <em>minha</em> trajetória.
             </h2>
 
-            <div className="titleDivider" />
+            <div className="titleDividerCentralize" />
           </div>
           <p className="lead">
             A <b>Victor Araujo Sociedade Individual de Advocacia</b> foi criada
@@ -464,7 +464,10 @@ function SpecialtiesSection() {
             <span className="sectionTag">Atuação</span>
             <span className="line" />
           </span>
-          <h2 className="sectionTitle"> Veja em quais situações posso te <em>ajudar</em> no dia a dia.<br /> <div className="titleDividerCentralize" /></h2>
+          <h2 className="sectionTitle">
+            Veja em quais situações posso te <em>ajudar</em> no dia a dia.
+          </h2>
+          <div className="titleDividerCentralize" />
 
 
         </div>
@@ -481,88 +484,67 @@ function SpecialtiesSection() {
 
 
 function SupportSection() {
-  const { ref: textRef, show: textShow } = useScrollReveal<HTMLDivElement>();
+  const { ref: headingRef, show: headingShow } = useScrollReveal<HTMLDivElement>();
   const { ref: cardsRef, show: cardsShow } = useScrollReveal<HTMLDivElement>();
 
   return (
-    <section id="apoio" className="section proceedingSection">
-      <div className="container supportGrid">
-        <div className='titleContainer'>
-          <span className="sectionHeader">
+    <section id="apoio" className="section supportSection">
+      <div className="container">
+        <div
+          ref={headingRef}
+          className={`sectionHeadingCentered reveal ${headingShow ? 'show' : ''}`}
+        >
+          <span className="sectionHeaderCentralize">
             <span className="line" />
             <span className="sectionTag">Apoio</span>
+            <span className="line" />
           </span>
           <h2 className="sectionTitle">
             Se voce é advogado, conte <em>comigo</em> para apoio.
           </h2>
-          <div className="titleDivider" />
+          <div className="titleDividerCentralize" />
         </div>
-        {/* 🔴 ESQUERDA (vermelho) */}
-        <div
-          ref={textRef}
-          className={`supportText reveal ${textShow ? 'show' : ''}`}
-        >
+      </div>
 
-          <div
-            ref={cardsRef}
-            className={`supportCards reveal ${cardsShow ? 'show' : ''}`}
-          >
-            <div className="supportCardsInner">
-
-              <div className="supportCard">
-                <div className="card">
-                  <div className="icon">
-                    <Scale size={48} />
-                  </div>
-                  <div className="supportCardBody">
-                    <div className="supportCardTitle">Audiências</div>
-                    Acompanhamento em audiências cíveis e criminais, com registro fiel do ato e alinhamento à estratégia definida para o caso.
-                  </div>
-                </div>
-              </div>
-
-              <div className="supportCard supportCardHighlight">
-                <div className="card">
-                  <div className="icon">
-                    <FileText size={48} />
-                  </div>
-
-                  <div className="supportCardBody">
-                    <div className="supportCardTitle">Pareceres</div>
-                    Pareceres com análise aprofundada e fundamentação técnica consistente, orientando decisões com segurança jurídica.
-                  </div>
-                </div>
-              </div>
-
-              <div className="supportCard">
-                <div className="card">
-                  <div className="icon">
-                    <Folder size={48} />
-                  </div>
-                  <div className="supportCardBody">
-                    <div className="supportCardTitle">Diligências</div>
-                    Diligências em fóruns, tribunais e órgãos administrativos, com agilidade e retorno objetivo sobre cada etapa cumprida.
-                  </div>
-                </div>
-              </div>
-
-
+      <div
+        ref={cardsRef}
+        className={`container supportCardsGrid reveal ${cardsShow ? 'show' : ''}`}
+      >
+        <div className="supportCard">
+          <div className="card">
+            <div className="icon">
+              <Scale size={48} />
+            </div>
+            <div className="supportCardBody">
+              <div className="supportCardTitle">Audiências</div>
+              Acompanhamento em audiências cíveis e criminais, com registro fiel do ato e alinhamento à estratégia definida para o caso.
             </div>
           </div>
         </div>
 
-        {/* 🔵 DIREITA (azul) */}
-
-
-        <div className="supportMedia">
-
-
-          <div className="vitorReadWrapper">
-            <img src={vitorReadPng} alt="vitorReadPng" />
+        <div className="supportCard supportCardHighlight">
+          <div className="card">
+            <div className="icon">
+              <FileText size={48} />
+            </div>
+            <div className="supportCardBody">
+              <div className="supportCardTitle">Pareceres</div>
+              Pareceres com análise aprofundada e fundamentação técnica consistente, orientando decisões com segurança jurídica.
+            </div>
           </div>
         </div>
 
-
+        <div className="supportCard">
+          <div className="card">
+            <div className="icon">
+              <Folder size={48} />
+            </div>
+            <div className="supportCardBody">
+              <div className="supportCardTitle">Diligências</div>
+              Diligências em fóruns, tribunais e órgãos administrativos, com agilidade e retorno objetivo sobre cada etapa cumprida.
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
